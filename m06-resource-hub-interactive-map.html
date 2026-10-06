@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outside Prep Resource Hub — OTD 6185 Module 6</title>
+<style>
+  :root {
+    --green: #154734; --gold: #FFB81C;
+    --ink: #12352a; --muted: #5f7068;
+    --soft-green: #e7f1ed; --soft-gold: #fff4d8; --line: #cfddd7;
+    --danger: #b42318; --danger-soft: #ffe5e2;
+    --success: #1f7a46; --success-soft: #e2f5e8;
+    --shadow: 0 22px 60px rgba(21, 71, 52, 0.16);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,184,28,0.28), transparent 30rem),
+      linear-gradient(135deg, #f7fbf8 0%, #eef7f3 100%);
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ---- Layout ------------------------------------------------------------
+     Phone-first single column. At the 1366x1366 LMS frame the container
+     widens and vertical rhythm tightens, so activities fit without the
+     retrofitted !important layer the previous course needed.              */
+  main {
+    width: min(100%, 46rem);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 1.75rem) clamp(0.85rem, 3vw, 1.5rem) 1.25rem;
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    main { width: min(100%, 1180px); padding-top: 1rem; padding-bottom: 1rem; }
+    h1 { font-size: 1.7rem !important; margin-bottom: 0.25rem !important; }
+    .card { padding: 0.85rem 1.1rem; margin-bottom: 0.7rem; }
+    .lede { margin-bottom: 0.2rem; }
+    /* Opt-in helpers: an activity adds these to its own containers. */
+    .fit-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55rem; align-items: start; }
+    .fit-2 > *, .fit-3 > *, .fit-4 > * { margin-bottom: 0 !important; }
+    .fit-span { grid-column: 1 / -1; }
+  }
+
+  /* Course banner. Decorative — alt="" and role="presentation" keep it out of
+     the accessibility tree, since it carries no information a student needs.
+     It scales with the container at its natural 20:3 ratio, so it costs about
+     177px of height in the wide frame and only ~56px on a phone. */
+  .course-banner {
+    display: block; width: 100%; height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: clamp(0.7rem, 2vw, 1rem);
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    .course-banner { margin-bottom: 0.55rem; }
+  }
+  @media print { .course-banner { display: none; } }
+
+  .card {
+    background: rgba(255,255,255,0.94);
+    border: 2px solid rgba(21,71,52,0.1);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: clamp(0.8rem, 2.2vw, 1.15rem);
+  }
+  .eyebrow {
+    display: inline-block; background: var(--soft-gold); color: var(--green);
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 999px;
+    padding: 0.3rem 0.85rem; margin: 0 0 0.65rem;
+  }
+  h1 { color: var(--green); font-size: clamp(1.35rem, 4.5vw, 1.85rem); line-height: 1.2; margin: 0 0 0.5rem; }
+  h2 { color: var(--green); font-size: 1.1rem; margin: 0 0 0.5rem; }
+  h3 { color: var(--green); font-size: 0.98rem; margin: 0 0 0.35rem; }
+  p { line-height: 1.55; margin: 0 0 0.6rem; }
+  .lede { color: var(--muted); font-weight: 600; }
+  .hint { color: var(--muted); font-size: 0.88rem; }
+
+  /* ---- Controls ---------------------------------------------------------- */
+  .btn {
+    min-height: 2.9rem; padding: 0 1.1rem;
+    border: 2px solid var(--green); border-radius: 8px;
+    background: #fff; color: var(--green);
+    font: inherit; font-weight: 800; font-size: 0.95rem; cursor: pointer;
+    transition: background 150ms ease, color 150ms ease, opacity 150ms ease;
+  }
+  .btn:not(:disabled):hover, .btn:not(:disabled):focus-visible { background: var(--green); color: #fff; outline: none; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.primary { background: var(--gold); border-color: var(--gold); }
+  .btn.primary:not(:disabled):hover, .btn.primary:not(:disabled):focus-visible { background: var(--green); border-color: var(--green); color: #fff; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.7rem; }
+  .controls .btn { flex: 1 1 10rem; }
+
+  select, input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: #fff;
+    border: 2px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.55rem; min-height: 2.6rem;
+  }
+  select:focus-visible, input:focus-visible, textarea:focus-visible,
+  button:focus-visible, [tabindex]:focus-visible, a:focus-visible {
+    outline: 3px solid var(--gold); outline-offset: 2px;
+  }
+
+  /* State signalling always pairs colour with a mark or text (WCAG 1.4.1). */
+  .is-correct { border-color: var(--success) !important; background: var(--success-soft); }
+  .is-wrong   { border-color: var(--danger) !important;  background: var(--danger-soft); }
+  .mark { font-weight: 900; margin-right: 0.3rem; }
+  .mark.ok { color: var(--success); }
+  .mark.no { color: var(--danger); }
+
+  .progress-track { height: 0.55rem; background: var(--soft-green); border-radius: 999px; overflow: hidden; margin-top: 0.6rem; }
+  .progress-fill { height: 100%; width: 0%; background: var(--green); transition: width 220ms ease; }
+
+  /* ---- Completion summary (must report what actually happened) ---------- */
+  #summary[hidden] { display: none; }
+  #summary { border-color: var(--success); }
+  #summary h2 { display: flex; align-items: center; gap: 0.4rem; }
+  .summary-score { font-size: 1.05rem; font-weight: 900; color: var(--green); margin: 0 0 0.6rem; }
+  .summary-list { margin: 0 0 0.6rem; padding-left: 1.1rem; }
+  .summary-list li { margin-bottom: 0.25rem; line-height: 1.45; }
+  .summary-group { margin-bottom: 0.7rem; }
+  .summary-group h3 { margin-bottom: 0.2rem; }
+
+  /* ---- Two-part activities ---------------------------------------------
+     Some modules combine two activities into one sequential experience.
+     Only one part is on screen at a time, so a merged activity costs no more
+     height than the taller of its two halves.                             */
+  .part-steps { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+  .part-step {
+    flex: 1 1 12rem; text-align: left;
+    border: 2px solid var(--line); border-radius: 8px;
+    background: rgba(255,255,255,0.9); color: var(--muted);
+    padding: 0.5rem 0.75rem; font: inherit; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: border-color 150ms ease, color 150ms ease;
+  }
+  .part-step .part-n { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .part-step[aria-current="true"] { border-color: var(--green); color: var(--green); background: var(--soft-green); }
+  .part-step[data-state="done"] { border-color: var(--success); color: var(--success); }
+  .part-step[data-state="done"] .part-n::after { content: " ✓"; }
+  .part-step[data-state="locked"] { opacity: 0.55; cursor: not-allowed; }
+  .part-step[data-state="locked"] .part-n::after { content: " (locked)"; }
+  .part-panel[hidden] { display: none; }
+
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---- Finish bar -------------------------------------------------------- */
+  .finish-bar {
+    position: sticky; bottom: 0; z-index: 30;
+    padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+    background: rgba(247, 251, 248, 0.92);
+    backdrop-filter: blur(6px); border-top: 2px solid var(--line);
+  }
+  .finish-button {
+    display: block; width: min(100%, 22rem); margin: 0 auto; min-height: 3rem;
+    border: 2px solid var(--gold); border-radius: 8px;
+    background: var(--gold); color: var(--green);
+    font: inherit; font-weight: 900; font-size: 1.05rem; cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, opacity 160ms ease;
+  }
+  .finish-button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .finish-button:not(:disabled):hover, .finish-button:not(:disabled):focus-visible {
+    background: var(--green); border-color: var(--green); color: #ffffff; outline: none;
+  }
+  @keyframes finish-pop { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .finish-button.enabled-pop { animation: finish-pop 600ms ease 2; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  @media (max-width: 520px) {
+    .controls { flex-direction: column; }
+    .controls .btn { flex: none; width: 100%; }
+    select, input[type="text"] { width: 100%; }
+  }
+
+/* only styles unique to this activity */
+.hub-progress { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; font-size:.95rem; }
+.hub-progress .progress-track { flex:1; }
+
+.lane { margin-bottom: 1.5rem; }
+.lane h2 { font-size:1.05rem; margin: 0 0 .6rem; color: var(--green); }
+
+.tiles { display:grid; grid-template-columns: 1fr; gap: .75rem; }
+
+.tile {
+  position: relative;
+  text-align: left;
+  background: #fff;
+  border: 2px solid #d8ded9;
+  border-radius: .6rem;
+  padding: .85rem .9rem 1rem;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  min-height: 100%;
+}
+.tile:hover { border-color: var(--green); }
+.tile:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.tile .tile-name { font-weight: 700; }
+.tile .tile-hint { font-size: .85rem; color: #4a534d; }
+
+.tile .visited-badge {
+  display: none;
+  align-items: center;
+  gap: .3rem;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-top: .2rem;
+}
+.tile.is-visited .visited-badge { display: inline-flex; }
+.tile.is-visited { border-color: var(--green); background: #f2f7f4; }
+.tile .visited-badge .glyph { font-size: 1rem; }
+
+.detail-panel { margin-top: 1rem; }
+.detail-panel h2 { margin-top: 0; }
+.detail-panel .lane-tag {
+  display:inline-block; font-size:.75rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.03em; color: var(--green); background:#e7f0ea; border-radius: 1rem;
+  padding: .15rem .6rem; margin-bottom:.5rem;
+}
+.detail-grid { display:grid; grid-template-columns: 1fr; gap: .7rem; margin-top: .6rem; }
+.detail-grid dt { font-weight:700; font-size:.85rem; color: var(--green); }
+.detail-grid dd { margin: .15rem 0 0; }
+.detail-empty { color:#4a534d; font-style: italic; }
+
+.planner-card { margin-top: 1.25rem; }
+.planner-card h2 { margin-top:0; }
+
+@media (min-width: 1100px) {
+  .tiles.fit-4 { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+</head>
+<body>
+<main>
+  
+  <header class="card">
+    <span class="eyebrow">Module 6 · NBCOT Intensive & Final Preparation</span>
+    <h1>Outside prep resource hub</h1>
+    <p class="lede">Open every resource to see what it's for, what it costs you in time, and when in your plan it fits. All eight opened unlocks the planner prompt.</p>
+  </header>
+
+<div class="hub-progress" role="status">
+  <span id="hubProgressText">0 of 8 resources opened</span>
+  <div class="progress-track"><div class="progress-fill" id="hubProgressFill" style="width:0%"></div></div>
+</div>
+
+<div class="lane" data-lane="Practice questions">
+  <h2>Practice questions</h2>
+  <div class="tiles fit-4">
+    <button type="button" class="tile" data-id="truelearn">
+      <span class="tile-name">TrueLearn question bank</span>
+      <span class="tile-hint">Mixed practice, rationales, your Module 1 metrics</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+    <button type="button" class="tile" data-id="nbcot-official">
+      <span class="tile-name">NBCOT official practice tools</span>
+      <span class="tile-hint">Self-Assessment &amp; StudyPack sample items</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+    <button type="button" class="tile" data-id="therapyed-exams">
+      <span class="tile-name">TherapyEd practice exams</span>
+      <span class="tile-hint">Full-length timed blocks, in the review book</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+  </div>
+</div>
+
+<div class="lane" data-lane="Content review">
+  <h2>Content review</h2>
+  <div class="tiles fit-4">
+    <button type="button" class="tile" data-id="therapyed-guide">
+      <span class="tile-name">TherapyEd National OT Certification Exam Review &amp; Study Guide</span>
+      <span class="tile-hint">Organized content review by domain</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+    <button type="button" class="tile" data-id="course-materials">
+      <span class="tile-name">Your own course materials &amp; OTPF-4</span>
+      <span class="tile-hint">Definitions, process order, terminology</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+    <button type="button" class="tile" data-id="peer-group">
+      <span class="tile-name">Peer study group / question-writing swap</span>
+      <span class="tile-hint">Explain rationales out loud, write NBCOT-style items</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+  </div>
+</div>
+
+<div class="lane" data-lane="Readiness &amp; logistics">
+  <h2>Readiness &amp; logistics</h2>
+  <div class="tiles fit-4">
+    <button type="button" class="tile" data-id="candidate-handbook">
+      <span class="tile-name">NBCOT Candidate Handbook &amp; exam-day rules</span>
+      <span class="tile-hint">Registration, scheduling, ID, testing-center rules</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+    <button type="button" class="tile" data-id="error-log">
+      <span class="tile-name">Error log &amp; pathway tracker</span>
+      <span class="tile-hint">From Modules 4–5, turns practice into next steps</span>
+      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
+    </button>
+  </div>
+</div>
+
+<div class="card detail-panel" id="detailPanel" role="region" aria-label="Resource details" tabindex="0">
+  <h2 id="detailTitle">Resource details</h2>
+  <p class="detail-empty" id="detailEmpty">Select a resource above to see what it's for, its time cost, when to use it, and what to watch out for.</p>
+  <div class="lane-tag" id="detailLane" hidden></div>
+  <dl class="detail-grid" id="detailGrid" hidden>
+    <div><dt>Best for</dt><dd id="detailBest"></dd></div>
+    <div><dt>Time cost</dt><dd id="detailTime"></dd></div>
+    <div><dt>When to use it</dt><dd id="detailWhen"></dd></div>
+    <div><dt>Watch out for</dt><dd id="detailWatch"></dd></div>
+  </dl>
+</div>
+
+<div class="card planner-card" id="plannerCard" hidden>
+  <h2>Planner prompt</h2>
+  <p>Pick two resources for the next 14 days and one for exam week. Write them into your Personal Focus Sheet before the TherapyEd intensive.</p>
+</div>
+
+  <section id="summary" class="card" hidden aria-labelledby="summary-heading">
+    <h2 id="summary-heading">How you did</h2>
+    <p class="summary-score" id="summary-score"></p>
+    <div id="summary-detail"></div>
+    <p class="hint" id="summary-note"></p>
+  </section>
+</main>
+
+<div id="live-region" class="visually-hidden" role="status" aria-live="polite"></div>
+
+<footer class="finish-bar">
+  <button type="button" id="finish-button" class="finish-button" disabled>Finish</button>
+</footer>
+
+<script>
+/* ---- SCORM 1.2 wrapper. Degrades silently to standalone preview. -------- */
+const SCORM = (() => {
+  let api = null, initialized = false, finished = false;
+  function findApi(win) {
+    let current = win, attempts = 0;
+    try {
+      while (current && !current.API && current.parent && current.parent !== current && attempts < 500) {
+        attempts += 1; current = current.parent;
+      }
+      if (current && current.API) return current.API;
+      if (win.opener && !win.opener.closed) return findApi(win.opener);
+    } catch (e) { return null; }
+    return null;
+  }
+  function call(method, ...args) {
+    if (!api || typeof api[method] !== "function") return "false";
+    try { return api[method](...args); } catch (e) { return "false"; }
+  }
+  function init() {
+    if (initialized) return true;
+    api = findApi(window);
+    if (!api) return false;
+    initialized = call("LMSInitialize", "") === "true";
+    if (initialized) {
+      const prior = call("LMSGetValue", "cmi.core.lesson_status");
+      if (prior !== "completed" && prior !== "passed") {
+        call("LMSSetValue", "cmi.core.lesson_status", "incomplete");
+      }
+      call("LMSSetValue", "cmi.core.score.min", "0");
+      call("LMSSetValue", "cmi.core.score.max", "100");
+      call("LMSCommit", "");
+    }
+    return initialized;
+  }
+  function setScore(raw) {
+    if (!initialized) return;
+    call("LMSSetValue", "cmi.core.score.raw", String(raw));
+    call("LMSCommit", "");
+  }
+  function finishActivity(score) {
+    if (finished) return;
+    if (initialized) {
+      call("LMSSetValue", "cmi.core.lesson_status", "completed");
+      if (score !== null && score !== undefined) call("LMSSetValue", "cmi.core.score.raw", String(score));
+      call("LMSCommit", "");
+      call("LMSFinish", "");
+    }
+    finished = true;
+  }
+  function unloadSafety() {
+    if (finished || !initialized) return;
+    call("LMSCommit", ""); call("LMSFinish", ""); finished = true;
+  }
+  window.addEventListener("pagehide", unloadSafety);
+  window.addEventListener("beforeunload", unloadSafety);
+  return { init, setScore, finishActivity };
+})();
+SCORM.init();
+
+/* ---- Activity API -------------------------------------------------------
+   The only surface an activity script needs. Handles the Finish button,
+   the live region, the score, and the completion summary, so no activity
+   re-implements them (or gets them subtly wrong).                        */
+const Activity = (() => {
+  const finishBtn = document.getElementById("finish-button");
+  const live = document.getElementById("live-region");
+  const summaryEl = document.getElementById("summary");
+  const scoreEl = document.getElementById("summary-score");
+  const detailEl = document.getElementById("summary-detail");
+  const noteEl = document.getElementById("summary-note");
+  let firstScore = null;   // frozen on first completion so review passes can't inflate it
+  let ready = false;
+
+  function announce(msg) { live.textContent = ""; setTimeout(() => { live.textContent = msg; }, 40); }
+
+  function setReady(on, msg) {
+    ready = !!on;
+    finishBtn.disabled = !ready;
+    if (ready) {
+      finishBtn.classList.add("enabled-pop");
+      setTimeout(() => finishBtn.classList.remove("enabled-pop"), 1400);
+      if (msg) announce(msg);
+    }
+  }
+
+  /* Report the truth: right and missed are arrays of plain strings.
+     Passing neither still renders an honest "you finished" line.        */
+  function summarize({ score = null, right = [], missed = [], note = "" } = {}) {
+    if (firstScore === null && score !== null) firstScore = score;
+    const shown = firstScore === null ? null : firstScore;
+    if (shown !== null) {
+      const total = right.length + missed.length;
+      scoreEl.textContent = total
+        ? `${right.length} of ${total} correct on your first attempt — ${shown}%`
+        : `First-attempt score: ${shown}%`;
+    } else {
+      scoreEl.textContent = "Activity complete.";
+    }
+    detailEl.innerHTML = "";
+    const group = (title, items, cls) => {
+      if (!items.length) return;
+      const wrap = document.createElement("div");
+      wrap.className = "summary-group";
+      const h = document.createElement("h3");
+      h.innerHTML = `<span class="mark ${cls === "ok" ? "ok" : "no"}">${cls === "ok" ? "✓" : "✗"}</span>${title}`;
+      const ul = document.createElement("ul");
+      ul.className = "summary-list";
+      items.forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      wrap.appendChild(h); wrap.appendChild(ul); detailEl.appendChild(wrap);
+    };
+    group(`You got these right (${right.length})`, right, "ok");
+    group(`You missed these (${missed.length})`, missed, "no");
+    noteEl.textContent = note || "";
+    summaryEl.hidden = false;
+    summaryEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (shown !== null) SCORM.setScore(shown);
+  }
+
+  finishBtn.addEventListener("click", () => {
+    if (!ready) return;
+    SCORM.finishActivity(firstScore);
+    finishBtn.disabled = true;
+    finishBtn.textContent = "Finished ✓";
+    announce("Activity finished and reported as complete.");
+  });
+
+  return { setReady, announce, summarize, get score() { return firstScore; } };
+})();
+
+/* ---- Multi-part coordinator --------------------------------------------
+   For modules that merge two activities into one. Each part reports here
+   instead of calling Activity.setReady / Activity.summarize itself, and only
+   the last part to finish unlocks Finish. Without this, part one would enable
+   the Finish button and a student could submit half an activity.         */
+const Parts = (() => {
+  let expected = 0;
+  const results = new Map();
+  const listeners = [];
+
+  function expect(n) { expected = n; }
+  function isDone(i) { return results.has(i); }
+  function onDone(fn) { listeners.push(fn); }
+
+  function done(index, { score = null, right = [], missed = [], label = "" } = {}) {
+    if (results.has(index)) return;                 // first result stands
+    results.set(index, { score, right, missed, label });
+    listeners.forEach(fn => { try { fn(index); } catch (e) {} });
+    if (results.size < expected) {
+      Activity.announce(`Part ${index} complete. Part ${index + 1} is now available.`);
+      return;
+    }
+    // Merge both parts' results, keeping each item attributed to its part so
+    // the summary says which half a student actually struggled with.
+    // NB: these locals must NOT be named `right` / `missed` — those are already
+    // bound by this function's destructured parameter, and redeclaring them with
+    // const is a SyntaxError that kills the whole inline script silently.
+    const allRight = [], allMissed = [];
+    let weighted = 0, items = 0;
+    [...results.entries()].sort((a, b) => a[0] - b[0]).forEach(([i, r]) => {
+      const tag = r.label ? `${r.label}: ` : `Part ${i}: `;
+      r.right.forEach(t => allRight.push(tag + t));
+      r.missed.forEach(t => allMissed.push(tag + t));
+      const n = r.right.length + r.missed.length;
+      if (r.score !== null && n) { weighted += r.score * n; items += n; }
+      else if (r.score !== null) { weighted += r.score; items += 1; }
+    });
+    const finalScore = items ? Math.round(weighted / items) : null;
+    Activity.setReady(true, "Both parts complete. You can finish the activity.");
+    Activity.summarize({
+      score: finalScore, right: allRight, missed: allMissed,
+      note: "This activity had two parts; the summary above covers both.",
+    });
+  }
+  return { expect, done, isDone, onDone };
+})();
+
+(function () {
+  var RESOURCES = {
+    "truelearn": {
+      lane: "Practice questions",
+      name: "TrueLearn question bank",
+      best: "Mixed practice with rationales and the performance metrics you used in Module 1.",
+      time: "40–60 questions per session, 60–75 min with rationale review.",
+      when: "Throughout; the data drives your pathway.",
+      watch: "Reading rationales only for missed items — read them for guessed-right items too."
+    },
+    "nbcot-official": {
+      lane: "Practice questions",
+      name: "NBCOT official practice tools (Self-Assessment, StudyPack sample items)",
+      best: "The closest match to real item style and the scaled score.",
+      time: "Self-assessment ~1 hr; sample sets ~30 min.",
+      when: "Baseline and again in Module 7.",
+      watch: "Limited item pool — don't over-repeat and memorize."
+    },
+    "therapyed-exams": {
+      lane: "Practice questions",
+      name: "TherapyEd practice exams (in the review book)",
+      best: "Full-length timed blocks that build endurance.",
+      time: "3–4 hrs per exam plus review.",
+      when: "After the intensive, one per week.",
+      watch: "Item difficulty is deliberately high; treat the score as a stress test, not a predictor."
+    },
+    "therapyed-guide": {
+      lane: "Content review",
+      name: "TherapyEd National OT Certification Exam Review & Study Guide",
+      best: "Organized content review by domain with the intensive's structure.",
+      time: "2–3 hrs per chapter.",
+      when: "Weakest content areas first, from your Module 1 data.",
+      watch: "Reading cover to cover — it's a reference, not a novel."
+    },
+    "course-materials": {
+      lane: "Content review",
+      name: "Your own course materials & OTPF-4",
+      best: "Definitions, process order and terminology the exam uses.",
+      time: "20-min lookups.",
+      when: "Whenever an error lands in the Knowledge or Terminology bins.",
+      watch: "Notes from first year may be outdated on frameworks."
+    },
+    "peer-group": {
+      lane: "Content review",
+      name: "Peer study group / question-writing swap",
+      best: "Explaining rationales out loud and writing items in NBCOT style.",
+      time: "60–90 min weekly.",
+      when: "From the intensive onward.",
+      watch: "Groups that drift to reassurance instead of practice."
+    },
+    "candidate-handbook": {
+      lane: "Readiness & logistics",
+      name: "NBCOT Candidate Handbook & exam-day rules",
+      best: "Registration, scheduling, ID and testing-center rules, what you may bring.",
+      time: "30 min once, then a re-check the week before.",
+      when: "As soon as eligibility is confirmed.",
+      watch: "Scheduling windows fill; book early."
+    },
+    "error-log": {
+      lane: "Readiness & logistics",
+      name: "Error log & pathway tracker (from Modules 4–5)",
+      best: "Turning every practice cycle into a targeted next step.",
+      time: "10 min after each session.",
+      when: "Every session until exam day.",
+      watch: "Logging without acting — each entry should end with what you'll practice next."
+    }
+  };
+
+  var TOTAL = Object.keys(RESOURCES).length;
+  var visited = new Set();
+  var completed = false;
+
+  var tiles = Array.prototype.slice.call(document.querySelectorAll(".tile"));
+  var progressText = document.getElementById("hubProgressText");
+  var progressFill = document.getElementById("hubProgressFill");
+  var detailEmpty = document.getElementById("detailEmpty");
+  var detailLane = document.getElementById("detailLane");
+  var detailGrid = document.getElementById("detailGrid");
+  var detailTitle = document.getElementById("detailTitle");
+  var detailBest = document.getElementById("detailBest");
+  var detailTime = document.getElementById("detailTime");
+  var detailWhen = document.getElementById("detailWhen");
+  var detailWatch = document.getElementById("detailWatch");
+  var plannerCard = document.getElementById("plannerCard");
+
+  function updateProgress() {
+    var n = visited.size;
+    progressText.textContent = n + " of " + TOTAL + " resources opened";
+    progressFill.style.width = Math.round((n / TOTAL) * 100) + "%";
+  }
+
+  function openDetail(id) {
+    var r = RESOURCES[id];
+    if (!r) { return; }
+
+    detailEmpty.hidden = true;
+    detailLane.hidden = false;
+    detailGrid.hidden = false;
+    detailLane.textContent = r.lane;
+    detailTitle.textContent = r.name;
+    detailBest.textContent = r.best;
+    detailTime.textContent = r.time;
+    detailWhen.textContent = r.when;
+    detailWatch.textContent = r.watch;
+
+    if (!visited.has(id)) {
+      visited.add(id);
+      var tile = document.querySelector('.tile[data-id="' + id + '"]');
+      if (tile) { tile.classList.add("is-visited"); }
+      updateProgress();
+      Activity.announce(r.name + " opened. " + visited.size + " of " + TOTAL + " resources viewed.");
+      checkCompletion();
+    }
+  }
+
+  function checkCompletion() {
+    if (visited.size >= TOTAL) {
+      if (!completed) {
+        completed = true;
+        Activity.setReady(true, "All eight resources opened — ready to finish.");
+        var names = [];
+        Object.keys(RESOURCES).forEach(function (id) {
+          if (visited.has(id)) { names.push(RESOURCES[id].name); }
+        });
+        Activity.summarize({
+          score: null,
+          right: names,
+          missed: [],
+          note: "Resource exploration complete."
+        });
+        plannerCard.hidden = false;
+        Activity.announce("All resources explored. Planner prompt unlocked.");
+      }
+    } else {
+      Activity.setReady(false);
+    }
+  }
+
+  tiles.forEach(function (tile) {
+    tile.addEventListener("click", function () {
+      openDetail(tile.getAttribute("data-id"));
+    });
+  });
+
+  updateProgress();
+  Activity.setReady(false);
+})();
+</script>
+</body>
+</html>

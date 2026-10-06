@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Did I Miss That Question? — OTD 6185 Module 5</title>
+<style>
+  :root {
+    --green: #154734; --gold: #FFB81C;
+    --ink: #12352a; --muted: #5f7068;
+    --soft-green: #e7f1ed; --soft-gold: #fff4d8; --line: #cfddd7;
+    --danger: #b42318; --danger-soft: #ffe5e2;
+    --success: #1f7a46; --success-soft: #e2f5e8;
+    --shadow: 0 22px 60px rgba(21, 71, 52, 0.16);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,184,28,0.28), transparent 30rem),
+      linear-gradient(135deg, #f7fbf8 0%, #eef7f3 100%);
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ---- Layout ------------------------------------------------------------
+     Phone-first single column. At the 1366x1366 LMS frame the container
+     widens and vertical rhythm tightens, so activities fit without the
+     retrofitted !important layer the previous course needed.              */
+  main {
+    width: min(100%, 46rem);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 1.75rem) clamp(0.85rem, 3vw, 1.5rem) 1.25rem;
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    main { width: min(100%, 1180px); padding-top: 1rem; padding-bottom: 1rem; }
+    h1 { font-size: 1.7rem !important; margin-bottom: 0.25rem !important; }
+    .card { padding: 0.85rem 1.1rem; margin-bottom: 0.7rem; }
+    .lede { margin-bottom: 0.2rem; }
+    /* Opt-in helpers: an activity adds these to its own containers. */
+    .fit-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55rem; align-items: start; }
+    .fit-2 > *, .fit-3 > *, .fit-4 > * { margin-bottom: 0 !important; }
+    .fit-span { grid-column: 1 / -1; }
+  }
+
+  /* Course banner. Decorative — alt="" and role="presentation" keep it out of
+     the accessibility tree, since it carries no information a student needs.
+     It scales with the container at its natural 20:3 ratio, so it costs about
+     177px of height in the wide frame and only ~56px on a phone. */
+  .course-banner {
+    display: block; width: 100%; height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: clamp(0.7rem, 2vw, 1rem);
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    .course-banner { margin-bottom: 0.55rem; }
+  }
+  @media print { .course-banner { display: none; } }
+
+  .card {
+    background: rgba(255,255,255,0.94);
+    border: 2px solid rgba(21,71,52,0.1);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: clamp(0.8rem, 2.2vw, 1.15rem);
+  }
+  .eyebrow {
+    display: inline-block; background: var(--soft-gold); color: var(--green);
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 999px;
+    padding: 0.3rem 0.85rem; margin: 0 0 0.65rem;
+  }
+  h1 { color: var(--green); font-size: clamp(1.35rem, 4.5vw, 1.85rem); line-height: 1.2; margin: 0 0 0.5rem; }
+  h2 { color: var(--green); font-size: 1.1rem; margin: 0 0 0.5rem; }
+  h3 { color: var(--green); font-size: 0.98rem; margin: 0 0 0.35rem; }
+  p { line-height: 1.55; margin: 0 0 0.6rem; }
+  .lede { color: var(--muted); font-weight: 600; }
+  .hint { color: var(--muted); font-size: 0.88rem; }
+
+  /* ---- Controls ---------------------------------------------------------- */
+  .btn {
+    min-height: 2.9rem; padding: 0 1.1rem;
+    border: 2px solid var(--green); border-radius: 8px;
+    background: #fff; color: var(--green);
+    font: inherit; font-weight: 800; font-size: 0.95rem; cursor: pointer;
+    transition: background 150ms ease, color 150ms ease, opacity 150ms ease;
+  }
+  .btn:not(:disabled):hover, .btn:not(:disabled):focus-visible { background: var(--green); color: #fff; outline: none; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.primary { background: var(--gold); border-color: var(--gold); }
+  .btn.primary:not(:disabled):hover, .btn.primary:not(:disabled):focus-visible { background: var(--green); border-color: var(--green); color: #fff; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.7rem; }
+  .controls .btn { flex: 1 1 10rem; }
+
+  select, input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: #fff;
+    border: 2px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.55rem; min-height: 2.6rem;
+  }
+  select:focus-visible, input:focus-visible, textarea:focus-visible,
+  button:focus-visible, [tabindex]:focus-visible, a:focus-visible {
+    outline: 3px solid var(--gold); outline-offset: 2px;
+  }
+
+  /* State signalling always pairs colour with a mark or text (WCAG 1.4.1). */
+  .is-correct { border-color: var(--success) !important; background: var(--success-soft); }
+  .is-wrong   { border-color: var(--danger) !important;  background: var(--danger-soft); }
+  .mark { font-weight: 900; margin-right: 0.3rem; }
+  .mark.ok { color: var(--success); }
+  .mark.no { color: var(--danger); }
+
+  .progress-track { height: 0.55rem; background: var(--soft-green); border-radius: 999px; overflow: hidden; margin-top: 0.6rem; }
+  .progress-fill { height: 100%; width: 0%; background: var(--green); transition: width 220ms ease; }
+
+  /* ---- Completion summary (must report what actually happened) ---------- */
+  #summary[hidden] { display: none; }
+  #summary { border-color: var(--success); }
+  #summary h2 { display: flex; align-items: center; gap: 0.4rem; }
+  .summary-score { font-size: 1.05rem; font-weight: 900; color: var(--green); margin: 0 0 0.6rem; }
+  .summary-list { margin: 0 0 0.6rem; padding-left: 1.1rem; }
+  .summary-list li { margin-bottom: 0.25rem; line-height: 1.45; }
+  .summary-group { margin-bottom: 0.7rem; }
+  .summary-group h3 { margin-bottom: 0.2rem; }
+
+  /* ---- Two-part activities ---------------------------------------------
+     Some modules combine two activities into one sequential experience.
+     Only one part is on screen at a time, so a merged activity costs no more
+     height than the taller of its two halves.                             */
+  .part-steps { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+  .part-step {
+    flex: 1 1 12rem; text-align: left;
+    border: 2px solid var(--line); border-radius: 8px;
+    background: rgba(255,255,255,0.9); color: var(--muted);
+    padding: 0.5rem 0.75rem; font: inherit; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: border-color 150ms ease, color 150ms ease;
+  }
+  .part-step .part-n { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .part-step[aria-current="true"] { border-color: var(--green); color: var(--green); background: var(--soft-green); }
+  .part-step[data-state="done"] { border-color: var(--success); color: var(--success); }
+  .part-step[data-state="done"] .part-n::after { content: " ✓"; }
+  .part-step[data-state="locked"] { opacity: 0.55; cursor: not-allowed; }
+  .part-step[data-state="locked"] .part-n::after { content: " (locked)"; }
+  .part-panel[hidden] { display: none; }
+
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---- Finish bar -------------------------------------------------------- */
+  .finish-bar {
+    position: sticky; bottom: 0; z-index: 30;
+    padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+    background: rgba(247, 251, 248, 0.92);
+    backdrop-filter: blur(6px); border-top: 2px solid var(--line);
+  }
+  .finish-button {
+    display: block; width: min(100%, 22rem); margin: 0 auto; min-height: 3rem;
+    border: 2px solid var(--gold); border-radius: 8px;
+    background: var(--gold); color: var(--green);
+    font: inherit; font-weight: 900; font-size: 1.05rem; cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, opacity 160ms ease;
+  }
+  .finish-button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .finish-button:not(:disabled):hover, .finish-button:not(:disabled):focus-visible {
+    background: var(--green); border-color: var(--green); color: #ffffff; outline: none;
+  }
+  @keyframes finish-pop { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .finish-button.enabled-pop { animation: finish-pop 600ms ease 2; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  @media (max-width: 520px) {
+    .controls { flex-direction: column; }
+    .controls .btn { flex: none; width: 100%; }
+    select, input[type="text"] { width: 100%; }
+  }
+
+/* Error-sort layout: pool on the left, bins in a fit-3 grid on the right */
+.sort-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+.note-pool {
+  flex: 1 1 260px;
+  min-width: 240px;
+}
+.note-pool h2, .bin-area h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+.note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 560px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.note-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 2px solid var(--gold);
+  background: #fff;
+  cursor: grab;
+  touch-action: manipulation;
+  user-select: none;
+  line-height: 1.3;
+}
+.note-card:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+.note-card .note-text { flex: 1; font-size: 0.9rem; }
+.note-card.is-selected {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px var(--green) inset;
+}
+.note-card.is-correct {
+  border-color: var(--green);
+  background: rgba(21, 71, 52, 0.08);
+  cursor: default;
+  pointer-events: none;
+}
+.note-card.is-dragging { opacity: 0.5; }
+
+.bin-area { flex: 2 1 480px; min-width: 300px; }
+.bin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.bin {
+  border: 1px solid rgba(21, 71, 52, 0.25);
+  border-radius: 10px;
+  padding: 8px;
+  background: #fff;
+}
+.bin-head {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+.bin-head small {
+  display: block;
+  font-weight: 400;
+  color: #444;
+  font-size: 0.75rem;
+}
+.drop-zone {
+  min-height: 96px;
+  border: 2px dashed rgba(21, 71, 52, 0.4);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+.drop-zone:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+.drop-zone.is-over {
+  border-color: var(--gold);
+  background: rgba(255, 184, 28, 0.12);
+}
+.drop-zone .zone-placeholder {
+  font-size: 0.75rem;
+  color: #666;
+  margin: auto;
+  text-align: center;
+}
+.drop-zone:has(.note-card) .zone-placeholder { display: none; }
+
+#progressText { font-size: 0.9rem; }
+
+@media (max-width: 640px) {
+  .note-list { max-height: 320px; }
+}
+</style>
+</head>
+<body>
+<main>
+  
+  <header class="card">
+    <span class="eyebrow">Module 5 · Learning From Your Errors</span>
+    <h1>Why did I miss that question?</h1>
+    <p class="lede">Twelve missed-question notes from real practice cycles. Drag each into the error category that explains it — or tap a note, then tap a bin. Check when every note is placed.</p>
+  </header>
+
+<section class="card sort-wrap" aria-label="Error sorting board">
+  <div class="note-pool" role="region" tabindex="0" aria-label="Note pool — unplaced notes">
+    <h2>Missed-question notes</h2>
+    <p class="hint" id="poolHint">Drag a note into a bin, or tap a note then tap a bin.</p>
+    <div class="note-list" id="noteList"></div>
+  </div>
+  <div class="bin-area">
+    <h2>Error categories</h2>
+    <div class="bin-grid fit-3" id="binGrid"></div>
+  </div>
+</section>
+
+<div class="controls">
+  <button type="button" class="btn primary" id="checkBtn">Check Answers</button>
+  <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span id="progressText" aria-live="off">0 of 12 correct</span>
+</div>
+
+<p id="feedback" class="hint" aria-live="polite"></p>
+
+  <section id="summary" class="card" hidden aria-labelledby="summary-heading">
+    <h2 id="summary-heading">How you did</h2>
+    <p class="summary-score" id="summary-score"></p>
+    <div id="summary-detail"></div>
+    <p class="hint" id="summary-note"></p>
+  </section>
+</main>
+
+<div id="live-region" class="visually-hidden" role="status" aria-live="polite"></div>
+
+<footer class="finish-bar">
+  <button type="button" id="finish-button" class="finish-button" disabled>Finish</button>
+</footer>
+
+<script>
+/* ---- SCORM 1.2 wrapper. Degrades silently to standalone preview. -------- */
+const SCORM = (() => {
+  let api = null, initialized = false, finished = false;
+  function findApi(win) {
+    let current = win, attempts = 0;
+    try {
+      while (current && !current.API && current.parent && current.parent !== current && attempts < 500) {
+        attempts += 1; current = current.parent;
+      }
+      if (current && current.API) return current.API;
+      if (win.opener && !win.opener.closed) return findApi(win.opener);
+    } catch (e) { return null; }
+    return null;
+  }
+  function call(method, ...args) {
+    if (!api || typeof api[method] !== "function") return "false";
+    try { return api[method](...args); } catch (e) { return "false"; }
+  }
+  function init() {
+    if (initialized) return true;
+    api = findApi(window);
+    if (!api) return false;
+    initialized = call("LMSInitialize", "") === "true";
+    if (initialized) {
+      const prior = call("LMSGetValue", "cmi.core.lesson_status");
+      if (prior !== "completed" && prior !== "passed") {
+        call("LMSSetValue", "cmi.core.lesson_status", "incomplete");
+      }
+      call("LMSSetValue", "cmi.core.score.min", "0");
+      call("LMSSetValue", "cmi.core.score.max", "100");
+      call("LMSCommit", "");
+    }
+    return initialized;
+  }
+  function setScore(raw) {
+    if (!initialized) return;
+    call("LMSSetValue", "cmi.core.score.raw", String(raw));
+    call("LMSCommit", "");
+  }
+  function finishActivity(score) {
+    if (finished) return;
+    if (initialized) {
+      call("LMSSetValue", "cmi.core.lesson_status", "completed");
+      if (score !== null && score !== undefined) call("LMSSetValue", "cmi.core.score.raw", String(score));
+      call("LMSCommit", "");
+      call("LMSFinish", "");
+    }
+    finished = true;
+  }
+  function unloadSafety() {
+    if (finished || !initialized) return;
+    call("LMSCommit", ""); call("LMSFinish", ""); finished = true;
+  }
+  window.addEventListener("pagehide", unloadSafety);
+  window.addEventListener("beforeunload", unloadSafety);
+  return { init, setScore, finishActivity };
+})();
+SCORM.init();
+
+/* ---- Activity API -------------------------------------------------------
+   The only surface an activity script needs. Handles the Finish button,
+   the live region, the score, and the completion summary, so no activity
+   re-implements them (or gets them subtly wrong).                        */
+const Activity = (() => {
+  const finishBtn = document.getElementById("finish-button");
+  const live = document.getElementById("live-region");
+  const summaryEl = document.getElementById("summary");
+  const scoreEl = document.getElementById("summary-score");
+  const detailEl = document.getElementById("summary-detail");
+  const noteEl = document.getElementById("summary-note");
+  let firstScore = null;   // frozen on first completion so review passes can't inflate it
+  let ready = false;
+
+  function announce(msg) { live.textContent = ""; setTimeout(() => { live.textContent = msg; }, 40); }
+
+  function setReady(on, msg) {
+    ready = !!on;
+    finishBtn.disabled = !ready;
+    if (ready) {
+      finishBtn.classList.add("enabled-pop");
+      setTimeout(() => finishBtn.classList.remove("enabled-pop"), 1400);
+      if (msg) announce(msg);
+    }
+  }
+
+  /* Report the truth: right and missed are arrays of plain strings.
+     Passing neither still renders an honest "you finished" line.        */
+  function summarize({ score = null, right = [], missed = [], note = "" } = {}) {
+    if (firstScore === null && score !== null) firstScore = score;
+    const shown = firstScore === null ? null : firstScore;
+    if (shown !== null) {
+      const total = right.length + missed.length;
+      scoreEl.textContent = total
+        ? `${right.length} of ${total} correct on your first attempt — ${shown}%`
+        : `First-attempt score: ${shown}%`;
+    } else {
+      scoreEl.textContent = "Activity complete.";
+    }
+    detailEl.innerHTML = "";
+    const group = (title, items, cls) => {
+      if (!items.length) return;
+      const wrap = document.createElement("div");
+      wrap.className = "summary-group";
+      const h = document.createElement("h3");
+      h.innerHTML = `<span class="mark ${cls === "ok" ? "ok" : "no"}">${cls === "ok" ? "✓" : "✗"}</span>${title}`;
+      const ul = document.createElement("ul");
+      ul.className = "summary-list";
+      items.forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      wrap.appendChild(h); wrap.appendChild(ul); detailEl.appendChild(wrap);
+    };
+    group(`You got these right (${right.length})`, right, "ok");
+    group(`You missed these (${missed.length})`, missed, "no");
+    noteEl.textContent = note || "";
+    summaryEl.hidden = false;
+    summaryEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (shown !== null) SCORM.setScore(shown);
+  }
+
+  finishBtn.addEventListener("click", () => {
+    if (!ready) return;
+    SCORM.finishActivity(firstScore);
+    finishBtn.disabled = true;
+    finishBtn.textContent = "Finished ✓";
+    announce("Activity finished and reported as complete.");
+  });
+
+  return { setReady, announce, summarize, get score() { return firstScore; } };
+})();
+
+/* ---- Multi-part coordinator --------------------------------------------
+   For modules that merge two activities into one. Each part reports here
+   instead of calling Activity.setReady / Activity.summarize itself, and only
+   the last part to finish unlocks Finish. Without this, part one would enable
+   the Finish button and a student could submit half an activity.         */
+const Parts = (() => {
+  let expected = 0;
+  const results = new Map();
+  const listeners = [];
+
+  function expect(n) { expected = n; }
+  function isDone(i) { return results.has(i); }
+  function onDone(fn) { listeners.push(fn); }
+
+  function done(index, { score = null, right = [], missed = [], label = "" } = {}) {
+    if (results.has(index)) return;                 // first result stands
+    results.set(index, { score, right, missed, label });
+    listeners.forEach(fn => { try { fn(index); } catch (e) {} });
+    if (results.size < expected) {
+      Activity.announce(`Part ${index} complete. Part ${index + 1} is now available.`);
+      return;
+    }
+    // Merge both parts' results, keeping each item attributed to its part so
+    // the summary says which half a student actually struggled with.
+    // NB: these locals must NOT be named `right` / `missed` — those are already
+    // bound by this function's destructured parameter, and redeclaring them with
+    // const is a SyntaxError that kills the whole inline script silently.
+    const allRight = [], allMissed = [];
+    let weighted = 0, items = 0;
+    [...results.entries()].sort((a, b) => a[0] - b[0]).forEach(([i, r]) => {
+      const tag = r.label ? `${r.label}: ` : `Part ${i}: `;
+      r.right.forEach(t => allRight.push(tag + t));
+      r.missed.forEach(t => allMissed.push(tag + t));
+      const n = r.right.length + r.missed.length;
+      if (r.score !== null && n) { weighted += r.score * n; items += n; }
+      else if (r.score !== null) { weighted += r.score; items += 1; }
+    });
+    const finalScore = items ? Math.round(weighted / items) : null;
+    Activity.setReady(true, "Both parts complete. You can finish the activity.");
+    Activity.summarize({
+      score: finalScore, right: allRight, missed: allMissed,
+      note: "This activity had two parts; the summary above covers both.",
+    });
+  }
+  return { expect, done, isDone, onDone };
+})();
+
+(function () {
+  "use strict";
+
+  var notes = [
+    { id: "n1", text: "“I didn’t know the precautions for a posterior-approach hip replacement.”", bin: "A", short: "Hip precautions" },
+    { id: "n2", text: "“The question said FIRST and I picked the intervention I’d do eventually.”", bin: "B", short: "Missed the FIRST cue" },
+    { id: "n3", text: "“I had it right, then changed it to the option that sounded more clinical.”", bin: "D", short: "Changed a correct answer" },
+    { id: "n4", text: "“Both B and C were reasonable; I picked the one that was more comprehensive instead of the one that was most client-centered.”", bin: "C", short: "Comprehensive over client-centered" },
+    { id: "n5", text: "“I read ‘adaptive equipment’ as ‘assistive technology’ and answered about devices the question didn’t ask about.”", bin: "E", short: "Misread ‘adaptive equipment’" },
+    { id: "n6", text: "“Ran out of time and guessed on the last five.”", bin: "D", short: "Ran out of time, guessed" },
+    { id: "n7", text: "“I couldn’t remember what MOHOST measures.”", bin: "A", short: "Forgot what MOHOST measures" },
+    { id: "n8", text: "“The stem said the client was on a new anticoagulant and I answered as if there were no bleeding risk.”", bin: "B", short: "Missed the bleeding-risk cue" },
+    { id: "n9", text: "“I knew the diagnosis but didn’t recognize ‘dysmetria’ in the stem.”", bin: "E", short: "Didn’t know ‘dysmetria’" },
+    { id: "n10", text: "“I picked the answer with the most steps because it felt thorough — the question wanted the initial step.”", bin: "C", short: "Most steps, not initial step" },
+    { id: "n11", text: "“The question was about evaluation and I answered with an intervention.”", bin: "B", short: "Evaluation vs. intervention" },
+    { id: "n12", text: "“I eliminated two, then flipped a coin between the last two without re-reading the stem.”", bin: "D", short: "Flipped a coin" }
+  ];
+
+  var bins = [
+    { id: "A", label: "Knowledge gap", desc: "didn’t know the content or terminology", hint: "Ask: could you have answered this with more content review?" },
+    { id: "B", label: "Misread the question", desc: "missed a cue word, a safety cue, or the OT-process stage being asked about", hint: "Ask: was the information in the stem, and did you use it?" },
+    { id: "C", label: "Reasoning error", desc: "chose a reasonable answer over the BEST one; overthought it", hint: "Ask: were both options defensible, and did you pick the best one for the reason the question wanted?" },
+    { id: "D", label: "Changed or rushed", desc: "changed a correct answer, rushed, or guessed without eliminating", hint: "Ask: did your process — timing, changing, guessing — cost the point?" },
+    { id: "E", label: "Terminology / wording", desc: "knew the concept but not the term, or misunderstood a phrase in the stem", hint: "Ask: did a word, not a concept, trip you up?" }
+  ];
+
+  var closingNote = "Bins B, C and D are test-taking and reasoning errors — they respond to strategy work. Bins A and E respond to content review. Count your own last cycle the same way before choosing what to practice.";
+
+  var binById = {};
+  bins.forEach(function (b) { binById[b.id] = b; });
+
+  var noteList = document.getElementById("noteList");
+  var binGrid = document.getElementById("binGrid");
+  var checkBtn = document.getElementById("checkBtn");
+  var feedback = document.getElementById("feedback");
+  var progressFill = document.getElementById("progressFill");
+  var progressText = document.getElementById("progressText");
+
+  var selectedNote = null;
+  var firstChecked = {};
+  var firstCorrect = {};
+  var lockedCount = 0;
+  var completed = false;
+  var draggingId = null;
+
+  // Build note cards
+  notes.forEach(function (n) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "note-card";
+    btn.id = n.id;
+    btn.draggable = true;
+    btn.dataset.noteId = n.id;
+
+    var textSpan = document.createElement("span");
+    textSpan.className = "note-text";
+    textSpan.textContent = n.text;
+    btn.appendChild(textSpan);
+
+    var mark = document.createElement("span");
+    mark.className = "mark";
+    mark.setAttribute("aria-hidden", "true");
+    btn.appendChild(mark);
+
+    var status = document.createElement("span");
+    status.className = "visually-hidden note-status";
+    btn.appendChild(status);
+
+    btn.addEventListener("click", function () {
+      if (btn.classList.contains("is-correct")) return;
+      if (selectedNote === n.id) {
+        deselect();
+      } else {
+        select(n.id, btn);
+      }
+    });
+
+    btn.addEventListener("dragstart", function (e) {
+      if (btn.classList.contains("is-correct")) { e.preventDefault(); return; }
+      draggingId = n.id;
+      btn.classList.add("is-dragging");
+      e.dataTransfer.setData("text/plain", n.id);
+      e.dataTransfer.effectAllowed = "move";
+    });
+    btn.addEventListener("dragend", function () {
+      btn.classList.remove("is-dragging");
+      draggingId = null;
+    });
+
+    noteList.appendChild(btn);
+  });
+
+  // Pool also accepts drops (pulling a note back out of a bin)
+  noteList.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
+  noteList.addEventListener("drop", function (e) {
+    e.preventDefault();
+    var id = e.dataTransfer.getData("text/plain");
+    if (!id) return;
+    var noteEl = document.getElementById(id);
+    if (noteEl && !noteEl.classList.contains("is-correct")) {
+      noteList.appendChild(noteEl);
+    }
+  });
+
+  // Build bins
+  bins.forEach(function (b) {
+    var wrap = document.createElement("div");
+    wrap.className = "bin";
+
+    var head = document.createElement("div");
+    head.className = "bin-head";
+    head.innerHTML = "<span>" + b.id + ". " + b.label + "</span><small></small>";
+    head.querySelector("small").textContent = b.desc;
+    wrap.appendChild(head);
+
+    var zone = document.createElement("div");
+    zone.className = "drop-zone";
+    zone.dataset.bin = b.id;
+    zone.tabIndex = 0;
+    zone.setAttribute("role", "button");
+    zone.setAttribute("aria-label", "Place selected note in " + b.label + " bin");
+
+    var placeholder = document.createElement("span");
+    placeholder.className = "zone-placeholder";
+    placeholder.textContent = "Drop notes here";
+    zone.appendChild(placeholder);
+
+    zone.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      zone.classList.add("is-over");
+    });
+    zone.addEventListener("dragleave", function () {
+      zone.classList.remove("is-over");
+    });
+    zone.addEventListener("drop", function (e) {
+      e.preventDefault();
+      zone.classList.remove("is-over");
+      var id = e.dataTransfer.getData("text/plain") || draggingId;
+      if (id) placeInZone(id, zone);
+    });
+    zone.addEventListener("click", function () {
+      if (selectedNote) {
+        placeInZone(selectedNote, zone);
+      }
+    });
+    zone.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        if (selectedNote) placeInZone(selectedNote, zone);
+      }
+    });
+
+    wrap.appendChild(zone);
+    binGrid.appendChild(wrap);
+  });
+
+  function select(id, btn) {
+    deselect();
+    selectedNote = id;
+    btn.classList.add("is-selected");
+    feedback.textContent = "Selected: “" + shortLabel(id) + "”. Now tap a bin to place it.";
+  }
+
+  function deselect() {
+    if (selectedNote) {
+      var el = document.getElementById(selectedNote);
+      if (el) el.classList.remove("is-selected");
+    }
+    selectedNote = null;
+  }
+
+  function shortLabel(id) {
+    var n = notes.filter(function (x) { return x.id === id; })[0];
+    return n ? n.short : id;
+  }
+
+  function placeInZone(id, zone) {
+    var noteEl = document.getElementById(id);
+    if (!noteEl || noteEl.classList.contains("is-correct")) return;
+    noteEl.classList.remove("is-dragging");
+    setMark(noteEl, "", "");
+    zone.appendChild(noteEl);
+    deselect();
+    Activity.announce(shortLabel(id) + " placed in " + binById[zone.dataset.bin].label + ".");
+  }
+
+  function setMark(noteEl, glyph, kind) {
+    var mark = noteEl.querySelector(".mark");
+    mark.textContent = glyph;
+    mark.className = kind ? "mark " + kind : "mark";
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (completed) return;
+    var roundCorrect = [];
+    var roundWrong = [];
+    var unplaced = 0;
+
+    notes.forEach(function (n) {
+      var noteEl = document.getElementById(n.id);
+      if (noteEl.classList.contains("is-correct")) return; // already locked
+      var parentZone = noteEl.closest(".drop-zone");
+      if (!parentZone) { unplaced++; return; }
+
+      var chosenBin = parentZone.dataset.bin;
+      if (!firstChecked[n.id]) {
+        firstChecked[n.id] = true;
+        firstCorrect[n.id] = chosenBin === n.bin;
+      }
+
+      if (chosenBin === n.bin) {
+        noteEl.classList.add("is-correct");
+        noteEl.disabled = true;
+        noteEl.draggable = false;
+        setMark(noteEl, "✓", "ok");
+        var status = noteEl.querySelector(".note-status");
+        status.textContent = "Correct.";
+        lockedCount++;
+        roundCorrect.push(n.short);
+      } else {
+        setMark(noteEl, "✗", "no");
+        var status2 = noteEl.querySelector(".note-status");
+        status2.textContent = "Not quite. " + binById[chosenBin].hint;
+        noteList.appendChild(noteEl);
+        roundWrong.push(n.short + " (" + binById[chosenBin].hint + ")");
+      }
+    });
+
+    progressFill.style.width = Math.round((lockedCount / 12) * 100) + "%";
+    progressText.textContent = lockedCount + " of 12 correct";
+
+    var msgParts = [];
+    if (roundCorrect.length) msgParts.push(roundCorrect.length + " correct this check.");
+    if (roundWrong.length) msgParts.push(roundWrong.length + " went back to the pool — read the hint and try again.");
+    if (unplaced) msgParts.push(unplaced + " note" + (unplaced === 1 ? "" : "s") + " still unplaced.");
+    feedback.textContent = msgParts.join(" ") || "Place a note before checking.";
+    Activity.announce(feedback.textContent);
+
+    if (lockedCount === 12) {
+      completed = true;
+      var right = [];
+      var missed = [];
+      notes.forEach(function (n) {
+        if (firstCorrect[n.id]) right.push(n.short);
+        else missed.push(n.short);
+      });
+      var score = Math.round((right.length / 12) * 100);
+      Activity.summarize({ score: score, right: right, missed: missed, note: closingNote });
+      Activity.setReady(true, "All 12 notes correctly sorted.");
+    }
+  });
+})();
+</script>
+</body>
+</html>

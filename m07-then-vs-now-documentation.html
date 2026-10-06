@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Then vs. Now — OTD 6185 Module 7</title>
+<style>
+  :root {
+    --green: #154734; --gold: #FFB81C;
+    --ink: #12352a; --muted: #5f7068;
+    --soft-green: #e7f1ed; --soft-gold: #fff4d8; --line: #cfddd7;
+    --danger: #b42318; --danger-soft: #ffe5e2;
+    --success: #1f7a46; --success-soft: #e2f5e8;
+    --shadow: 0 22px 60px rgba(21, 71, 52, 0.16);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,184,28,0.28), transparent 30rem),
+      linear-gradient(135deg, #f7fbf8 0%, #eef7f3 100%);
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ---- Layout ------------------------------------------------------------
+     Phone-first single column. At the 1366x1366 LMS frame the container
+     widens and vertical rhythm tightens, so activities fit without the
+     retrofitted !important layer the previous course needed.              */
+  main {
+    width: min(100%, 46rem);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 1.75rem) clamp(0.85rem, 3vw, 1.5rem) 1.25rem;
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    main { width: min(100%, 1180px); padding-top: 1rem; padding-bottom: 1rem; }
+    h1 { font-size: 1.7rem !important; margin-bottom: 0.25rem !important; }
+    .card { padding: 0.85rem 1.1rem; margin-bottom: 0.7rem; }
+    .lede { margin-bottom: 0.2rem; }
+    /* Opt-in helpers: an activity adds these to its own containers. */
+    .fit-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55rem; align-items: start; }
+    .fit-2 > *, .fit-3 > *, .fit-4 > * { margin-bottom: 0 !important; }
+    .fit-span { grid-column: 1 / -1; }
+  }
+
+  /* Course banner. Decorative — alt="" and role="presentation" keep it out of
+     the accessibility tree, since it carries no information a student needs.
+     It scales with the container at its natural 20:3 ratio, so it costs about
+     177px of height in the wide frame and only ~56px on a phone. */
+  .course-banner {
+    display: block; width: 100%; height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: clamp(0.7rem, 2vw, 1rem);
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    .course-banner { margin-bottom: 0.55rem; }
+  }
+  @media print { .course-banner { display: none; } }
+
+  .card {
+    background: rgba(255,255,255,0.94);
+    border: 2px solid rgba(21,71,52,0.1);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: clamp(0.8rem, 2.2vw, 1.15rem);
+  }
+  .eyebrow {
+    display: inline-block; background: var(--soft-gold); color: var(--green);
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 999px;
+    padding: 0.3rem 0.85rem; margin: 0 0 0.65rem;
+  }
+  h1 { color: var(--green); font-size: clamp(1.35rem, 4.5vw, 1.85rem); line-height: 1.2; margin: 0 0 0.5rem; }
+  h2 { color: var(--green); font-size: 1.1rem; margin: 0 0 0.5rem; }
+  h3 { color: var(--green); font-size: 0.98rem; margin: 0 0 0.35rem; }
+  p { line-height: 1.55; margin: 0 0 0.6rem; }
+  .lede { color: var(--muted); font-weight: 600; }
+  .hint { color: var(--muted); font-size: 0.88rem; }
+
+  /* ---- Controls ---------------------------------------------------------- */
+  .btn {
+    min-height: 2.9rem; padding: 0 1.1rem;
+    border: 2px solid var(--green); border-radius: 8px;
+    background: #fff; color: var(--green);
+    font: inherit; font-weight: 800; font-size: 0.95rem; cursor: pointer;
+    transition: background 150ms ease, color 150ms ease, opacity 150ms ease;
+  }
+  .btn:not(:disabled):hover, .btn:not(:disabled):focus-visible { background: var(--green); color: #fff; outline: none; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.primary { background: var(--gold); border-color: var(--gold); }
+  .btn.primary:not(:disabled):hover, .btn.primary:not(:disabled):focus-visible { background: var(--green); border-color: var(--green); color: #fff; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.7rem; }
+  .controls .btn { flex: 1 1 10rem; }
+
+  select, input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: #fff;
+    border: 2px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.55rem; min-height: 2.6rem;
+  }
+  select:focus-visible, input:focus-visible, textarea:focus-visible,
+  button:focus-visible, [tabindex]:focus-visible, a:focus-visible {
+    outline: 3px solid var(--gold); outline-offset: 2px;
+  }
+
+  /* State signalling always pairs colour with a mark or text (WCAG 1.4.1). */
+  .is-correct { border-color: var(--success) !important; background: var(--success-soft); }
+  .is-wrong   { border-color: var(--danger) !important;  background: var(--danger-soft); }
+  .mark { font-weight: 900; margin-right: 0.3rem; }
+  .mark.ok { color: var(--success); }
+  .mark.no { color: var(--danger); }
+
+  .progress-track { height: 0.55rem; background: var(--soft-green); border-radius: 999px; overflow: hidden; margin-top: 0.6rem; }
+  .progress-fill { height: 100%; width: 0%; background: var(--green); transition: width 220ms ease; }
+
+  /* ---- Completion summary (must report what actually happened) ---------- */
+  #summary[hidden] { display: none; }
+  #summary { border-color: var(--success); }
+  #summary h2 { display: flex; align-items: center; gap: 0.4rem; }
+  .summary-score { font-size: 1.05rem; font-weight: 900; color: var(--green); margin: 0 0 0.6rem; }
+  .summary-list { margin: 0 0 0.6rem; padding-left: 1.1rem; }
+  .summary-list li { margin-bottom: 0.25rem; line-height: 1.45; }
+  .summary-group { margin-bottom: 0.7rem; }
+  .summary-group h3 { margin-bottom: 0.2rem; }
+
+  /* ---- Two-part activities ---------------------------------------------
+     Some modules combine two activities into one sequential experience.
+     Only one part is on screen at a time, so a merged activity costs no more
+     height than the taller of its two halves.                             */
+  .part-steps { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+  .part-step {
+    flex: 1 1 12rem; text-align: left;
+    border: 2px solid var(--line); border-radius: 8px;
+    background: rgba(255,255,255,0.9); color: var(--muted);
+    padding: 0.5rem 0.75rem; font: inherit; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: border-color 150ms ease, color 150ms ease;
+  }
+  .part-step .part-n { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .part-step[aria-current="true"] { border-color: var(--green); color: var(--green); background: var(--soft-green); }
+  .part-step[data-state="done"] { border-color: var(--success); color: var(--success); }
+  .part-step[data-state="done"] .part-n::after { content: " ✓"; }
+  .part-step[data-state="locked"] { opacity: 0.55; cursor: not-allowed; }
+  .part-step[data-state="locked"] .part-n::after { content: " (locked)"; }
+  .part-panel[hidden] { display: none; }
+
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---- Finish bar -------------------------------------------------------- */
+  .finish-bar {
+    position: sticky; bottom: 0; z-index: 30;
+    padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+    background: rgba(247, 251, 248, 0.92);
+    backdrop-filter: blur(6px); border-top: 2px solid var(--line);
+  }
+  .finish-button {
+    display: block; width: min(100%, 22rem); margin: 0 auto; min-height: 3rem;
+    border: 2px solid var(--gold); border-radius: 8px;
+    background: var(--gold); color: var(--green);
+    font: inherit; font-weight: 900; font-size: 1.05rem; cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, opacity 160ms ease;
+  }
+  .finish-button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .finish-button:not(:disabled):hover, .finish-button:not(:disabled):focus-visible {
+    background: var(--green); border-color: var(--green); color: #ffffff; outline: none;
+  }
+  @keyframes finish-pop { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .finish-button.enabled-pop { animation: finish-pop 600ms ease 2; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  @media (max-width: 520px) {
+    .controls { flex-direction: column; }
+    .controls .btn { flex: none; width: 100%; }
+    select, input[type="text"] { width: 100%; }
+  }
+
+.tvn-progress { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; }
+.tvn-progress .progress-track { flex: 1; }
+.tvn-progress .tvn-progress-label { font-size: 0.9rem; white-space: nowrap; }
+.tvn-section h2 { margin-top: 0; }
+.tvn-metric { border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.tvn-metric-title { font-weight: 600; margin: 0 0 8px; }
+.tvn-metric-range { font-weight: 400; font-size: 0.85rem; opacity: 0.8; }
+.tvn-pair { display: grid; gap: 10px; }
+.tvn-field label { display: block; font-size: 0.9rem; margin-bottom: 4px; }
+.tvn-field input { width: 100%; box-sizing: border-box; }
+.tvn-field .tvn-msg { font-size: 0.85rem; min-height: 1.2em; margin-top: 3px; }
+.tvn-field.is-valid .tvn-msg { color: var(--green); }
+.tvn-field.is-invalid input { border-color: #b3261e; }
+.tvn-field.is-invalid .tvn-msg { color: #b3261e; }
+.tvn-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.95rem; }
+.tvn-table th, .tvn-table td { text-align: left; padding: 8px 6px; border-bottom: 1px solid rgba(0,0,0,0.12); vertical-align: top; }
+.tvn-table th { font-weight: 600; }
+.tvn-delta { font-weight: 600; white-space: nowrap; }
+.tvn-delta.up { color: var(--green); }
+.tvn-delta.down { color: #b3261e; }
+.tvn-delta.flat { opacity: 0.85; }
+.tvn-prompt { margin-bottom: 16px; }
+.tvn-prompt label { display: block; font-weight: 600; margin-bottom: 6px; }
+.tvn-prompt textarea { width: 100%; box-sizing: border-box; min-height: 110px; }
+.tvn-prompt .tvn-count { font-size: 0.85rem; margin-top: 4px; }
+.tvn-prompt.is-valid .tvn-count { color: var(--green); }
+.tvn-prompt.is-invalid .tvn-count { color: #b3261e; }
+.tvn-check { list-style: none; padding: 0; margin: 0 0 12px; }
+.tvn-check li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; }
+.tvn-check input { margin-top: 4px; flex: 0 0 auto; }
+.tvn-check label { cursor: pointer; }
+.tvn-locked { opacity: 0.6; }
+.tvn-status { font-size: 0.95rem; margin: 8px 0 0; }
+.tvn-copy-out { width: 100%; box-sizing: border-box; min-height: 200px; margin-top: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85rem; }
+@media (min-width: 1100px) and (min-height: 900px) {
+  .tvn-metrics.fit-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tvn-metrics.fit-2 .tvn-metric { margin-bottom: 0; }
+  .tvn-pair { grid-template-columns: 1fr 1fr; }
+  .tvn-prompts.fit-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+}
+</style>
+</head>
+<body>
+<main>
+  
+  <header class="card">
+    <span class="eyebrow">Module 7 · Reassess & Prepare for NBCOT</span>
+    <h1>Then vs. now: what has changed?</h1>
+    <p class="lede">Enter your baseline and final numbers, then answer the reflection prompts. The readiness checklist at the end unlocks when every section is complete. Nothing is sent anywhere — copy your answers into your final reflection.</p>
+  </header>
+
+<div class="tvn-progress" aria-label="Form progress">
+  <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0" aria-labelledby="tvn-progress-label">
+    <div class="progress-fill" id="tvn-progress-fill" style="width:0%"></div>
+  </div>
+  <span class="tvn-progress-label" id="tvn-progress-label">0 of 18 required fields complete</span>
+</div>
+
+<section class="card tvn-section" aria-labelledby="tvn-h-s1">
+  <h2 id="tvn-h-s1">Section 1 — Baseline (Module 1) vs Final (Module 7) numbers</h2>
+  <p class="hint">Enter each number from your Module 1 baseline and your Module 7 reassessment. Every field is required.</p>
+  <div class="tvn-metrics fit-2" id="tvn-metrics"></div>
+</section>
+
+<section class="card tvn-section" aria-labelledby="tvn-h-s2">
+  <h2 id="tvn-h-s2">Section 2 — What changed</h2>
+  <p class="hint">Computed automatically from Section 1 (final − baseline). Rows fill in as you enter valid numbers.</p>
+  <table class="tvn-table" id="tvn-delta-table">
+    <thead>
+      <tr><th scope="col">Metric</th><th scope="col">Baseline</th><th scope="col">Final</th><th scope="col">Change</th><th scope="col">What it means</th></tr>
+    </thead>
+    <tbody id="tvn-delta-body"></tbody>
+  </table>
+  <div class="tvn-prompt" id="wrap-p-trust">
+    <label for="p-trust">Which change do you trust most, and why? Point to the specific number.</label>
+    <textarea id="p-trust" rows="5" aria-describedby="count-p-trust"></textarea>
+    <div class="tvn-count" id="count-p-trust" aria-live="polite">0 words (at least 25 required)</div>
+  </div>
+</section>
+
+<section class="card tvn-section" aria-labelledby="tvn-h-s3">
+  <h2 id="tvn-h-s3">Section 3 — Priorities and readiness</h2>
+  <p class="hint">Each response needs at least 25 words.</p>
+  <div class="tvn-prompts fit-2">
+    <div class="tvn-prompt" id="wrap-p-pathway">
+      <label for="p-pathway">A. Which pathway did you work on, and what evidence shows it helped — or didn't?</label>
+      <textarea id="p-pathway" rows="5" aria-describedby="count-p-pathway"></textarea>
+      <div class="tvn-count" id="count-p-pathway" aria-live="polite">0 words (at least 25 required)</div>
+    </div>
+    <div class="tvn-prompt" id="wrap-p-priorities">
+      <label for="p-priorities">B. What are your two remaining priorities for the weeks before the exam, and what will you do about each in the next seven days?</label>
+      <textarea id="p-priorities" rows="5" aria-describedby="count-p-priorities"></textarea>
+      <div class="tvn-count" id="count-p-priorities" aria-live="polite">0 words (at least 25 required)</div>
+    </div>
+    <div class="tvn-prompt fit-span" id="wrap-p-ready">
+      <label for="p-ready">C. On a scale you'd defend to a mentor, how ready are you — and what would change that number?</label>
+      <textarea id="p-ready" rows="5" aria-describedby="count-p-ready"></textarea>
+      <div class="tvn-count" id="count-p-ready" aria-live="polite">0 words (at least 25 required)</div>
+    </div>
+  </div>
+</section>
+
+<section class="card tvn-section tvn-locked" id="tvn-checklist-section" aria-labelledby="tvn-h-check">
+  <h2 id="tvn-h-check">Readiness checklist</h2>
+  <p class="hint" id="tvn-check-hint">Locked until every field above is complete. Tick all 8 to finish.</p>
+  <ul class="tvn-check" id="tvn-check-list"></ul>
+  <p class="tvn-status" id="tvn-status" role="status"></p>
+</section>
+
+<section class="card tvn-section" aria-labelledby="tvn-h-copy">
+  <h2 id="tvn-h-copy">Copy my answers</h2>
+  <p class="hint">Assembles everything you entered into plain text so you can paste it into the Final NBCOT Readiness Reflection.</p>
+  <div class="controls">
+    <button type="button" class="btn primary" id="tvn-copy-btn">Copy my answers</button>
+  </div>
+  <label for="tvn-copy-out" class="visually-hidden">Assembled answers (plain text)</label>
+  <textarea class="tvn-copy-out" id="tvn-copy-out" readonly aria-describedby="tvn-copy-msg"></textarea>
+  <p class="tvn-status" id="tvn-copy-msg" role="status"></p>
+</section>
+
+  <section id="summary" class="card" hidden aria-labelledby="summary-heading">
+    <h2 id="summary-heading">How you did</h2>
+    <p class="summary-score" id="summary-score"></p>
+    <div id="summary-detail"></div>
+    <p class="hint" id="summary-note"></p>
+  </section>
+</main>
+
+<div id="live-region" class="visually-hidden" role="status" aria-live="polite"></div>
+
+<footer class="finish-bar">
+  <button type="button" id="finish-button" class="finish-button" disabled>Finish</button>
+</footer>
+
+<script>
+/* ---- SCORM 1.2 wrapper. Degrades silently to standalone preview. -------- */
+const SCORM = (() => {
+  let api = null, initialized = false, finished = false;
+  function findApi(win) {
+    let current = win, attempts = 0;
+    try {
+      while (current && !current.API && current.parent && current.parent !== current && attempts < 500) {
+        attempts += 1; current = current.parent;
+      }
+      if (current && current.API) return current.API;
+      if (win.opener && !win.opener.closed) return findApi(win.opener);
+    } catch (e) { return null; }
+    return null;
+  }
+  function call(method, ...args) {
+    if (!api || typeof api[method] !== "function") return "false";
+    try { return api[method](...args); } catch (e) { return "false"; }
+  }
+  function init() {
+    if (initialized) return true;
+    api = findApi(window);
+    if (!api) return false;
+    initialized = call("LMSInitialize", "") === "true";
+    if (initialized) {
+      const prior = call("LMSGetValue", "cmi.core.lesson_status");
+      if (prior !== "completed" && prior !== "passed") {
+        call("LMSSetValue", "cmi.core.lesson_status", "incomplete");
+      }
+      call("LMSSetValue", "cmi.core.score.min", "0");
+      call("LMSSetValue", "cmi.core.score.max", "100");
+      call("LMSCommit", "");
+    }
+    return initialized;
+  }
+  function setScore(raw) {
+    if (!initialized) return;
+    call("LMSSetValue", "cmi.core.score.raw", String(raw));
+    call("LMSCommit", "");
+  }
+  function finishActivity(score) {
+    if (finished) return;
+    if (initialized) {
+      call("LMSSetValue", "cmi.core.lesson_status", "completed");
+      if (score !== null && score !== undefined) call("LMSSetValue", "cmi.core.score.raw", String(score));
+      call("LMSCommit", "");
+      call("LMSFinish", "");
+    }
+    finished = true;
+  }
+  function unloadSafety() {
+    if (finished || !initialized) return;
+    call("LMSCommit", ""); call("LMSFinish", ""); finished = true;
+  }
+  window.addEventListener("pagehide", unloadSafety);
+  window.addEventListener("beforeunload", unloadSafety);
+  return { init, setScore, finishActivity };
+})();
+SCORM.init();
+
+/* ---- Activity API -------------------------------------------------------
+   The only surface an activity script needs. Handles the Finish button,
+   the live region, the score, and the completion summary, so no activity
+   re-implements them (or gets them subtly wrong).                        */
+const Activity = (() => {
+  const finishBtn = document.getElementById("finish-button");
+  const live = document.getElementById("live-region");
+  const summaryEl = document.getElementById("summary");
+  const scoreEl = document.getElementById("summary-score");
+  const detailEl = document.getElementById("summary-detail");
+  const noteEl = document.getElementById("summary-note");
+  let firstScore = null;   // frozen on first completion so review passes can't inflate it
+  let ready = false;
+
+  function announce(msg) { live.textContent = ""; setTimeout(() => { live.textContent = msg; }, 40); }
+
+  function setReady(on, msg) {
+    ready = !!on;
+    finishBtn.disabled = !ready;
+    if (ready) {
+      finishBtn.classList.add("enabled-pop");
+      setTimeout(() => finishBtn.classList.remove("enabled-pop"), 1400);
+      if (msg) announce(msg);
+    }
+  }
+
+  /* Report the truth: right and missed are arrays of plain strings.
+     Passing neither still renders an honest "you finished" line.        */
+  function summarize({ score = null, right = [], missed = [], note = "" } = {}) {
+    if (firstScore === null && score !== null) firstScore = score;
+    const shown = firstScore === null ? null : firstScore;
+    if (shown !== null) {
+      const total = right.length + missed.length;
+      scoreEl.textContent = total
+        ? `${right.length} of ${total} correct on your first attempt — ${shown}%`
+        : `First-attempt score: ${shown}%`;
+    } else {
+      scoreEl.textContent = "Activity complete.";
+    }
+    detailEl.innerHTML = "";
+    const group = (title, items, cls) => {
+      if (!items.length) return;
+      const wrap = document.createElement("div");
+      wrap.className = "summary-group";
+      const h = document.createElement("h3");
+      h.innerHTML = `<span class="mark ${cls === "ok" ? "ok" : "no"}">${cls === "ok" ? "✓" : "✗"}</span>${title}`;
+      const ul = document.createElement("ul");
+      ul.className = "summary-list";
+      items.forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      wrap.appendChild(h); wrap.appendChild(ul); detailEl.appendChild(wrap);
+    };
+    group(`You got these right (${right.length})`, right, "ok");
+    group(`You missed these (${missed.length})`, missed, "no");
+    noteEl.textContent = note || "";
+    summaryEl.hidden = false;
+    summaryEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (shown !== null) SCORM.setScore(shown);
+  }
+
+  finishBtn.addEventListener("click", () => {
+    if (!ready) return;
+    SCORM.finishActivity(firstScore);
+    finishBtn.disabled = true;
+    finishBtn.textContent = "Finished ✓";
+    announce("Activity finished and reported as complete.");
+  });
+
+  return { setReady, announce, summarize, get score() { return firstScore; } };
+})();
+
+/* ---- Multi-part coordinator --------------------------------------------
+   For modules that merge two activities into one. Each part reports here
+   instead of calling Activity.setReady / Activity.summarize itself, and only
+   the last part to finish unlocks Finish. Without this, part one would enable
+   the Finish button and a student could submit half an activity.         */
+const Parts = (() => {
+  let expected = 0;
+  const results = new Map();
+  const listeners = [];
+
+  function expect(n) { expected = n; }
+  function isDone(i) { return results.has(i); }
+  function onDone(fn) { listeners.push(fn); }
+
+  function done(index, { score = null, right = [], missed = [], label = "" } = {}) {
+    if (results.has(index)) return;                 // first result stands
+    results.set(index, { score, right, missed, label });
+    listeners.forEach(fn => { try { fn(index); } catch (e) {} });
+    if (results.size < expected) {
+      Activity.announce(`Part ${index} complete. Part ${index + 1} is now available.`);
+      return;
+    }
+    // Merge both parts' results, keeping each item attributed to its part so
+    // the summary says which half a student actually struggled with.
+    // NB: these locals must NOT be named `right` / `missed` — those are already
+    // bound by this function's destructured parameter, and redeclaring them with
+    // const is a SyntaxError that kills the whole inline script silently.
+    const allRight = [], allMissed = [];
+    let weighted = 0, items = 0;
+    [...results.entries()].sort((a, b) => a[0] - b[0]).forEach(([i, r]) => {
+      const tag = r.label ? `${r.label}: ` : `Part ${i}: `;
+      r.right.forEach(t => allRight.push(tag + t));
+      r.missed.forEach(t => allMissed.push(tag + t));
+      const n = r.right.length + r.missed.length;
+      if (r.score !== null && n) { weighted += r.score * n; items += n; }
+      else if (r.score !== null) { weighted += r.score; items += 1; }
+    });
+    const finalScore = items ? Math.round(weighted / items) : null;
+    Activity.setReady(true, "Both parts complete. You can finish the activity.");
+    Activity.summarize({
+      score: finalScore, right: allRight, missed: allMissed,
+      note: "This activity had two parts; the summary above covers both.",
+    });
+  }
+  return { expect, done, isDone, onDone };
+})();
+
+(function () {
+  var PASS = 450;
+  var MIN_WORDS = 25;
+
+  // higherIsBetter: true = a rise is an improvement; false = a fall is an improvement
+  var metrics = [
+    { id: 'scaled', label: 'TrueLearn mock scaled score', range: '0–800; pass line 450', min: 0, max: 800, unit: '', higherIsBetter: true },
+    { id: 'pct', label: 'Overall percent correct', range: '0–100', min: 0, max: 100, unit: '%', higherIsBetter: true },
+    { id: 'lowarea', label: 'Lowest content area', range: 'name the area', text: true },
+    { id: 'lowpct', label: 'Lowest content area percent', range: '0–100', min: 0, max: 100, unit: '%', higherIsBetter: true },
+    { id: 'secs', label: 'Average seconds per question', range: '10–200', min: 10, max: 200, unit: ' s', higherIsBetter: false },
+    { id: 'changed', label: 'Answers changed right→wrong per block', range: '0–50', min: 0, max: 50, unit: '', higherIsBetter: false },
+    { id: 'domains', label: 'NBCOT Self-Assessment: domains rated "needs work"', range: '0–4', min: 0, max: 4, unit: '', higherIsBetter: false }
+  ];
+
+  var prompts = ['p-trust', 'p-pathway', 'p-priorities', 'p-ready'];
+  var promptLabels = {
+    'p-trust': 'Section 2 — Which change do you trust most, and why?',
+    'p-pathway': 'Section 3A — Which pathway did you work on, and what evidence shows it helped — or didn\'t?',
+    'p-priorities': 'Section 3B — Two remaining priorities and what you will do in the next seven days',
+    'p-ready': 'Section 3C — How ready are you, and what would change that number?'
+  };
+
+  var checklist = [
+    'I know my scaled-score trend and where it sits against 450.',
+    'My two weakest content areas are named and scheduled.',
+    'I have a per-question time cap I practise with.',
+    'I have a rule for when I may change an answer.',
+    'I have a reset routine for after a hard question.',
+    'I have completed at least one full-length timed exam since the intensive.',
+    'My exam date, location, ID and arrival plan are confirmed.',
+    'My error log has an entry for my last practice session with a next step.'
+  ];
+
+  var REQUIRED = metrics.length * 2 + prompts.length; // 14 + 4 = 18
+  var values = {};      // numeric values (or text) keyed by fieldId
+  var valid = {};       // fieldId -> boolean
+  var summarized = false;
+  var wasReady = false;
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+
+  // ---------- Build Section 1 ----------
+  var metricsEl = $('tvn-metrics');
+  var html = '';
+  metrics.forEach(function (m) {
+    html += '<div class="tvn-metric"><p class="tvn-metric-title">' + esc(m.label) + ' <span class="tvn-metric-range">(' + esc(m.range) + ')</span></p><div class="tvn-pair">';
+    ['baseline', 'final'].forEach(function (when) {
+      var fid = m.id + '-' + when;
+      var nice = when === 'baseline' ? 'Baseline (Module 1)' : 'Final (Module 7)';
+      html += '<div class="tvn-field" id="wrap-' + fid + '"><label for="' + fid + '">' + nice + '</label>';
+      if (m.text) {
+        html += '<input type="text" id="' + fid + '" autocomplete="off" aria-describedby="msg-' + fid + '">';
+      } else {
+        html += '<input type="number" id="' + fid + '" inputmode="numeric" min="' + m.min + '" max="' + m.max + '" step="1" aria-describedby="msg-' + fid + '">';
+      }
+      html += '<div class="tvn-msg" id="msg-' + fid + '"></div></div>';
+    });
+    html += '</div></div>';
+  });
+  metricsEl.innerHTML = html;
+
+  // ---------- Build checklist ----------
+  var checkHtml = '';
+  checklist.forEach(function (text, i) {
+    var cid = 'chk-' + (i + 1);
+    checkHtml += '<li><input type="checkbox" id="' + cid + '" disabled><label for="' + cid + '">' + esc(text) + '</label></li>';
+  });
+  $('tvn-check-list').innerHTML = checkHtml;
+
+  // ---------- Validation ----------
+  function validateNumeric(m, when) {
+    var fid = m.id + '-' + when;
+    var input = $(fid), wrap = $('wrap-' + fid), msg = $('msg-' + fid);
+    var raw = input.value.trim();
+    wrap.classList.remove('is-valid', 'is-invalid');
+    if (raw === '') { valid[fid] = false; values[fid] = null; msg.textContent = ''; return; }
+    var n = Number(raw);
+    if (!isFinite(n)) { valid[fid] = false; values[fid] = null; wrap.classList.add('is-invalid'); msg.textContent = '✗ Enter a number.'; return; }
+    if (n < m.min || n > m.max) { valid[fid] = false; values[fid] = null; wrap.classList.add('is-invalid'); msg.textContent = '✗ Must be between ' + m.min + ' and ' + m.max + '.'; return; }
+    valid[fid] = true; values[fid] = n; wrap.classList.add('is-valid'); msg.textContent = '✓ Recorded';
+  }
+
+  function validateText(m, when) {
+    var fid = m.id + '-' + when;
+    var input = $(fid), wrap = $('wrap-' + fid), msg = $('msg-' + fid);
+    var raw = input.value.trim();
+    wrap.classList.remove('is-valid', 'is-invalid');
+    if (raw === '') { valid[fid] = false; values[fid] = ''; msg.textContent = ''; return; }
+    valid[fid] = true; values[fid] = raw; wrap.classList.add('is-valid'); msg.textContent = '✓ Recorded';
+  }
+
+  function wordCount(s) { var t = s.trim(); return t ? t.split(/\s+/).length : 0; }
+
+  function validatePrompt(pid) {
+    var ta = $(pid), wrap = $('wrap-' + pid), cnt = $('count-' + pid);
+    var n = wordCount(ta.value);
+    wrap.classList.remove('is-valid', 'is-invalid');
+    values[pid] = ta.value.trim();
+    if (n === 0) { valid[pid] = false; cnt.textContent = '0 words (at least ' + MIN_WORDS + ' required)'; return; }
+    if (n < MIN_WORDS) { valid[pid] = false; wrap.classList.add('is-invalid'); cnt.textContent = '✗ ' + n + ' word' + (n === 1 ? '' : 's') + ' — need ' + (MIN_WORDS - n) + ' more'; return; }
+    valid[pid] = true; wrap.classList.add('is-valid'); cnt.textContent = '✓ ' + n + ' words';
+  }
+
+  // ---------- Deltas ----------
+  function fmt(n, unit) { return (Math.round(n * 10) / 10) + (unit || ''); }
+  function signed(n) { return (n > 0 ? '+' : '') + (Math.round(n * 10) / 10); }
+
+  function interpret(m, b, f) {
+    var d = f - b;
+    if (m.id === 'scaled') {
+      var mag = Math.abs(d);
+      if (d === 0) return f >= PASS ? 'No change — you sit ' + (f - PASS) + ' above the pass line.' : 'No change — still ' + (PASS - f) + ' below the pass line.';
+      var dir = d > 0 ? 'up' : 'down';
+      if (f >= PASS && b < PASS) return 'Scaled score ' + dir + ' ' + mag + ' — you crossed the pass line.';
+      if (f >= PASS && b >= PASS) return 'Scaled score ' + dir + ' ' + mag + ' — still ' + (f - PASS) + ' above the pass line.';
+      if (f < PASS && b >= PASS) return 'Scaled score ' + dir + ' ' + mag + ' — you dropped below the pass line by ' + (PASS - f) + '.';
+      return 'Scaled score ' + dir + ' ' + mag + ' — still ' + (PASS - f) + ' below the pass line.';
+    }
+    if (m.id === 'pct') return d === 0 ? 'No change in overall accuracy.' : 'Overall accuracy ' + (d > 0 ? 'up' : 'down') + ' ' + Math.abs(d) + ' points (' + b + '% → ' + f + '%).';
+    if (m.id === 'lowpct') return d === 0 ? 'Your weakest area held steady at ' + f + '%.' : 'Weakest area ' + (d > 0 ? 'up' : 'down') + ' ' + Math.abs(d) + ' points — ' + (f < 60 ? 'still under 60%, keep it scheduled.' : 'now at ' + f + '%.');
+    if (m.id === 'secs') return d === 0 ? 'Pacing unchanged at ' + f + ' s per question.' : (d < 0 ? 'Faster by ' + Math.abs(d) + ' s per question — check that accuracy held.' : 'Slower by ' + d + ' s per question — check whether the extra time bought accuracy.');
+    if (m.id === 'changed') return d === 0 ? 'Same number of right→wrong changes per block.' : (d < 0 ? Math.abs(d) + ' fewer right→wrong changes per block — your answer-change rule is working.' : d + ' more right→wrong changes per block — revisit your answer-change rule.');
+    if (m.id === 'domains') return d === 0 ? 'Same number of domains rated "needs work" (' + f + ' of 4).' : (d < 0 ? Math.abs(d) + ' fewer domain' + (Math.abs(d) === 1 ? '' : 's') + ' rated "needs work" (' + f + ' of 4 remain).' : d + ' more domain' + (d === 1 ? '' : 's') + ' rated "needs work" (' + f + ' of 4).');
+    return '';
+  }
+
+  function renderDeltas() {
+    var body = $('tvn-delta-body');
+    var rows = '';
+    metrics.forEach(function (m) {
+      var b = values[m.id + '-baseline'], f = values[m.id + '-final'];
+      var ok = valid[m.id + '-baseline'] && valid[m.id + '-final'];
+      var bCell = ok ? esc(m.text ? b : fmt(b, m.unit)) : '—';
+      var fCell = ok ? esc(m.text ? f : fmt(f, m.unit)) : '—';
+      var dCell = '<span class="tvn-delta flat">–</span>', note = 'Enter both numbers to compute.';
+      if (ok && m.text) {
+        if (b.toLowerCase() === f.toLowerCase()) { dCell = '<span class="tvn-delta flat">– same area</span>'; note = 'Your weakest area is still ' + esc(f) + '.'; }
+        else { dCell = '<span class="tvn-delta flat">changed</span>'; note = 'Weakest area moved from ' + esc(b) + ' to ' + esc(f) + '.'; }
+      } else if (ok) {
+        var d = f - b;
+        var improved = m.higherIsBetter ? d > 0 : d < 0;
+        if (d === 0) dCell = '<span class="tvn-delta flat">– no change (0)</span>';
+        else if (improved) dCell = '<span class="tvn-delta up">▲ improved (' + signed(d) + (m.unit || '') + ')</span>';
+        else dCell = '<span class="tvn-delta down">▼ declined (' + signed(d) + (m.unit || '') + ')</span>';
+        note = esc(interpret(m, b, f));
+      }
+      rows += '<tr><th scope="row">' + esc(m.label) + '</th><td>' + bCell + '</td><td>' + fCell + '</td><td>' + dCell + '</td><td>' + note + '</td></tr>';
+    });
+    body.innerHTML = rows;
+  }
+
+  // ---------- Progress, checklist gate, readiness ----------
+  function completedCount() {
+    var n = 0;
+    metrics.forEach(function (m) { if (valid[m.id + '-baseline']) n++; if (valid[m.id + '-final']) n++; });
+    prompts.forEach(function (p) { if (valid[p]) n++; });
+    return n;
+  }
+
+  function allChecked() {
+    for (var i = 1; i <= checklist.length; i++) { if (!$('chk-' + i).checked) return false; }
+    return true;
+  }
+
+  function update() {
+    var done = completedCount();
+    var pct = Math.round(done / REQUIRED * 100);
+    $('tvn-progress-fill').style.width = pct + '%';
+    $('tvn-progress-label').textContent = done + ' of ' + REQUIRED + ' required fields complete';
+    var track = document.querySelector('.tvn-progress .progress-track');
+    track.setAttribute('aria-valuenow', String(done));
+
+    var fieldsDone = done === REQUIRED;
+    var sec = $('tvn-checklist-section');
+    var wasLocked = sec.classList.contains('tvn-locked');
+    sec.classList.toggle('tvn-locked', !fieldsDone);
+    for (var i = 1; i <= checklist.length; i++) { $('chk-' + i).disabled = !fieldsDone; }
+    $('tvn-check-hint').textContent = fieldsDone ? 'All fields complete. Tick all 8 items to finish.' : 'Locked until every field above is complete (' + (REQUIRED - done) + ' remaining). Tick all 8 to finish.';
+    if (wasLocked && fieldsDone) Activity.announce('All fields complete. The readiness checklist is now unlocked.');
+
+    var ticked = 0;
+    for (var j = 1; j <= checklist.length; j++) { if ($('chk-' + j).checked) ticked++; }
+
+    var ready = fieldsDone && allChecked();
+    var status = $('tvn-status');
+    if (ready) {
+      status.textContent = '✓ All sections complete and all 8 checklist items ticked. Copy your answers below, then select Finish.';
+      if (!wasReady) {
+        Activity.setReady(true, 'All sections complete and every readiness item ticked.');
+        if (!summarized) {
+          summarized = true;
+          Activity.summarize({
+            score: null,
+            right: ['Section 1 — Baseline vs final numbers', 'Section 2 — What changed + trusted-change reflection', 'Section 3 — Priorities and readiness', 'Readiness checklist — 8 of 8 ticked'],
+            missed: [],
+            note: 'Copy your answers into the Final NBCOT Readiness Reflection.'
+          });
+        }
+      }
+      wasReady = true;
+    } else {
+      status.textContent = fieldsDone ? (ticked + ' of 8 checklist items ticked.') : '';
+      if (wasReady) { Activity.setReady(false); Activity.announce('Completion condition no longer met. Finish is disabled until all fields are valid and all 8 items are ticked.'); }
+      wasReady = false;
+    }
+  }
+
+  // ---------- Copy my answers ----------
+  function assembleText() {
+    var lines = [];
+    lines.push('THEN VS. NOW — OTD 6185 Module 7');
+    lines.push('');
+    lines.push('SECTION 1 — Baseline (Module 1) vs Final (Module 7)');
+    metrics.forEach(function (m) {
+      var b = $(m.id + '-baseline').value.trim() || '(blank)';
+      var f = $(m.id + '-final').value.trim() || '(blank)';
+      lines.push(m.label + ': baseline ' + b + (m.text ? '' : m.unit) + ' | final ' + f + (m.text ? '' : m.unit));
+    });
+    lines.push('');
+    lines.push('SECTION 2 — What changed');
+    metrics.forEach(function (m) {
+      var ok = valid[m.id + '-baseline'] && valid[m.id + '-final'];
+      if (!ok) { lines.push(m.label + ': (incomplete)'); return; }
+      var b = values[m.id + '-baseline'], f = values[m.id + '-final'];
+      if (m.text) { lines.push(m.label + ': ' + (b.toLowerCase() === f.toLowerCase() ? 'same area (' + f + ')' : b + ' -> ' + f)); return; }
+      var d = f - b; var improved = m.higherIsBetter ? d > 0 : d < 0;
+      var tag = d === 0 ? 'no change' : (improved ? 'improved' : 'declined');
+      lines.push(m.label + ': ' + signed(d) + (m.unit || '') + ' (' + tag + ') — ' + interpret(m, b, f));
+    });
+    lines.push('');
+    prompts.forEach(function (p) {
+      lines.push(promptLabels[p]);
+      lines.push($(p).value.trim() || '(blank)');
+      lines.push('');
+    });
+    lines.push('READINESS CHECKLIST');
+    checklist.forEach(function (t, i) { lines.push(($('chk-' + (i + 1)).checked ? '[x] ' : '[ ] ') + t); });
+    return lines.join('\n');
+  }
+
+  $('tvn-copy-btn').addEventListener('click', function () {
+    var out = $('tvn-copy-out'), msg = $('tvn-copy-msg');
+    out.value = assembleText();
+    var copied = false;
+    try {
+      out.focus(); out.select();
+      if (document.execCommand) copied = document.execCommand('copy');
+    } catch (e) { copied = false; }
+    msg.textContent = copied ? '✓ Copied to your clipboard. Paste it into the Final NBCOT Readiness Reflection.' : 'Your answers are assembled below. Select all the text in the box and copy it (Ctrl+C or Cmd+C).';
+    Activity.announce(msg.textContent);
+  });
+
+  // ---------- Wire events ----------
+  metrics.forEach(function (m) {
+    ['baseline', 'final'].forEach(function (when) {
+      var fid = m.id + '-' + when;
+      var fn = m.text ? function () { validateText(m, when); renderDeltas(); update(); } : function () { validateNumeric(m, when); renderDeltas(); update(); };
+      $(fid).addEventListener('input', fn);
+      $(fid).addEventListener('change', fn);
+    });
+  });
+  prompts.forEach(function (p) {
+    $(p).addEventListener('input', function () { validatePrompt(p); update(); });
+  });
+  for (var k = 1; k <= checklist.length; k++) { $('chk-' + k).addEventListener('change', update); }
+
+  // Initial state
+  metrics.forEach(function (m) { if (m.text) { validateText(m, 'baseline'); validateText(m, 'final'); } else { validateNumeric(m, 'baseline'); validateNumeric(m, 'final'); } });
+  prompts.forEach(validatePrompt);
+  renderDeltas();
+  update();
+})();
+</script>
+</body>
+</html>

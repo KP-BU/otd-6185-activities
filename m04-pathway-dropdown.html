@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Which Pathway? — OTD 6185 Module 4</title>
+<style>
+  :root {
+    --green: #154734; --gold: #FFB81C;
+    --ink: #12352a; --muted: #5f7068;
+    --soft-green: #e7f1ed; --soft-gold: #fff4d8; --line: #cfddd7;
+    --danger: #b42318; --danger-soft: #ffe5e2;
+    --success: #1f7a46; --success-soft: #e2f5e8;
+    --shadow: 0 22px 60px rgba(21, 71, 52, 0.16);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(255,184,28,0.28), transparent 30rem),
+      linear-gradient(135deg, #f7fbf8 0%, #eef7f3 100%);
+    min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ---- Layout ------------------------------------------------------------
+     Phone-first single column. At the 1366x1366 LMS frame the container
+     widens and vertical rhythm tightens, so activities fit without the
+     retrofitted !important layer the previous course needed.              */
+  main {
+    width: min(100%, 46rem);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 1.75rem) clamp(0.85rem, 3vw, 1.5rem) 1.25rem;
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    main { width: min(100%, 1180px); padding-top: 1rem; padding-bottom: 1rem; }
+    h1 { font-size: 1.7rem !important; margin-bottom: 0.25rem !important; }
+    .card { padding: 0.85rem 1.1rem; margin-bottom: 0.7rem; }
+    .lede { margin-bottom: 0.2rem; }
+    /* Opt-in helpers: an activity adds these to its own containers. */
+    .fit-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; align-items: start; }
+    .fit-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55rem; align-items: start; }
+    .fit-2 > *, .fit-3 > *, .fit-4 > * { margin-bottom: 0 !important; }
+    .fit-span { grid-column: 1 / -1; }
+  }
+
+  /* Course banner. Decorative — alt="" and role="presentation" keep it out of
+     the accessibility tree, since it carries no information a student needs.
+     It scales with the container at its natural 20:3 ratio, so it costs about
+     177px of height in the wide frame and only ~56px on a phone. */
+  .course-banner {
+    display: block; width: 100%; height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: clamp(0.7rem, 2vw, 1rem);
+  }
+  @media (min-width: 1100px) and (min-height: 900px) {
+    .course-banner { margin-bottom: 0.55rem; }
+  }
+  @media print { .course-banner { display: none; } }
+
+  .card {
+    background: rgba(255,255,255,0.94);
+    border: 2px solid rgba(21,71,52,0.1);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: clamp(0.8rem, 2.2vw, 1.15rem);
+  }
+  .eyebrow {
+    display: inline-block; background: var(--soft-gold); color: var(--green);
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 999px;
+    padding: 0.3rem 0.85rem; margin: 0 0 0.65rem;
+  }
+  h1 { color: var(--green); font-size: clamp(1.35rem, 4.5vw, 1.85rem); line-height: 1.2; margin: 0 0 0.5rem; }
+  h2 { color: var(--green); font-size: 1.1rem; margin: 0 0 0.5rem; }
+  h3 { color: var(--green); font-size: 0.98rem; margin: 0 0 0.35rem; }
+  p { line-height: 1.55; margin: 0 0 0.6rem; }
+  .lede { color: var(--muted); font-weight: 600; }
+  .hint { color: var(--muted); font-size: 0.88rem; }
+
+  /* ---- Controls ---------------------------------------------------------- */
+  .btn {
+    min-height: 2.9rem; padding: 0 1.1rem;
+    border: 2px solid var(--green); border-radius: 8px;
+    background: #fff; color: var(--green);
+    font: inherit; font-weight: 800; font-size: 0.95rem; cursor: pointer;
+    transition: background 150ms ease, color 150ms ease, opacity 150ms ease;
+  }
+  .btn:not(:disabled):hover, .btn:not(:disabled):focus-visible { background: var(--green); color: #fff; outline: none; }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.primary { background: var(--gold); border-color: var(--gold); }
+  .btn.primary:not(:disabled):hover, .btn.primary:not(:disabled):focus-visible { background: var(--green); border-color: var(--green); color: #fff; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.7rem; }
+  .controls .btn { flex: 1 1 10rem; }
+
+  select, input[type="text"], textarea {
+    font: inherit; color: var(--ink); background: #fff;
+    border: 2px solid var(--line); border-radius: 6px;
+    padding: 0.45rem 0.55rem; min-height: 2.6rem;
+  }
+  select:focus-visible, input:focus-visible, textarea:focus-visible,
+  button:focus-visible, [tabindex]:focus-visible, a:focus-visible {
+    outline: 3px solid var(--gold); outline-offset: 2px;
+  }
+
+  /* State signalling always pairs colour with a mark or text (WCAG 1.4.1). */
+  .is-correct { border-color: var(--success) !important; background: var(--success-soft); }
+  .is-wrong   { border-color: var(--danger) !important;  background: var(--danger-soft); }
+  .mark { font-weight: 900; margin-right: 0.3rem; }
+  .mark.ok { color: var(--success); }
+  .mark.no { color: var(--danger); }
+
+  .progress-track { height: 0.55rem; background: var(--soft-green); border-radius: 999px; overflow: hidden; margin-top: 0.6rem; }
+  .progress-fill { height: 100%; width: 0%; background: var(--green); transition: width 220ms ease; }
+
+  /* ---- Completion summary (must report what actually happened) ---------- */
+  #summary[hidden] { display: none; }
+  #summary { border-color: var(--success); }
+  #summary h2 { display: flex; align-items: center; gap: 0.4rem; }
+  .summary-score { font-size: 1.05rem; font-weight: 900; color: var(--green); margin: 0 0 0.6rem; }
+  .summary-list { margin: 0 0 0.6rem; padding-left: 1.1rem; }
+  .summary-list li { margin-bottom: 0.25rem; line-height: 1.45; }
+  .summary-group { margin-bottom: 0.7rem; }
+  .summary-group h3 { margin-bottom: 0.2rem; }
+
+  /* ---- Two-part activities ---------------------------------------------
+     Some modules combine two activities into one sequential experience.
+     Only one part is on screen at a time, so a merged activity costs no more
+     height than the taller of its two halves.                             */
+  .part-steps { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+  .part-step {
+    flex: 1 1 12rem; text-align: left;
+    border: 2px solid var(--line); border-radius: 8px;
+    background: rgba(255,255,255,0.9); color: var(--muted);
+    padding: 0.5rem 0.75rem; font: inherit; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; transition: border-color 150ms ease, color 150ms ease;
+  }
+  .part-step .part-n { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .part-step[aria-current="true"] { border-color: var(--green); color: var(--green); background: var(--soft-green); }
+  .part-step[data-state="done"] { border-color: var(--success); color: var(--success); }
+  .part-step[data-state="done"] .part-n::after { content: " ✓"; }
+  .part-step[data-state="locked"] { opacity: 0.55; cursor: not-allowed; }
+  .part-step[data-state="locked"] .part-n::after { content: " (locked)"; }
+  .part-panel[hidden] { display: none; }
+
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ---- Finish bar -------------------------------------------------------- */
+  .finish-bar {
+    position: sticky; bottom: 0; z-index: 30;
+    padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+    background: rgba(247, 251, 248, 0.92);
+    backdrop-filter: blur(6px); border-top: 2px solid var(--line);
+  }
+  .finish-button {
+    display: block; width: min(100%, 22rem); margin: 0 auto; min-height: 3rem;
+    border: 2px solid var(--gold); border-radius: 8px;
+    background: var(--gold); color: var(--green);
+    font: inherit; font-weight: 900; font-size: 1.05rem; cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, opacity 160ms ease;
+  }
+  .finish-button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .finish-button:not(:disabled):hover, .finish-button:not(:disabled):focus-visible {
+    background: var(--green); border-color: var(--green); color: #ffffff; outline: none;
+  }
+  @keyframes finish-pop { 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
+  .finish-button.enabled-pop { animation: finish-pop 600ms ease 2; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  @media (max-width: 520px) {
+    .controls { flex-direction: column; }
+    .controls .btn { flex: none; width: 100%; }
+    select, input[type="text"] { width: 100%; }
+  }
+
+.vignette-grid{display:grid;gap:1rem}
+.vignette-card{display:flex;flex-direction:column;gap:.6rem}
+.vignette-text{margin:0;line-height:1.55}
+.field{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.field label{font-weight:600;min-width:8.5rem;flex:0 0 auto}
+.field select{flex:1 1 220px;min-height:3.1rem;font:inherit;border:2px dashed var(--green);border-radius:.5rem;padding:.4rem .6rem;background:#fff;color:inherit}
+.field select.correct{border-style:solid;border-color:#1a7f37;background:#eaf6ee}
+.field select.incorrect{border-style:solid;border-color:#b3261e;background:#fdecea}
+.field select:disabled{opacity:.9;cursor:not-allowed}
+.mark{font-weight:700;font-size:.9rem;white-space:nowrap}
+.mark.ok{color:#1a7f37}
+.mark.no{color:#b3261e}
+.reveal{margin:0;font-size:.9rem;font-weight:600;color:var(--green)}
+.feedback-line{margin:.2rem 0 0;padding-top:.5rem;border-top:1px dashed #ccc;font-size:.92rem}
+.closing-note{margin-top:.25rem}
+.status-line{font-weight:600}
+</style>
+</head>
+<body>
+<main>
+  
+  <header class="card">
+    <span class="eyebrow">Module 4 · Your Individual Performance Pathway</span>
+    <h1>Which pathway does this test-taker need?</h1>
+    <p class="lede">Each vignette describes a real pattern from practice-question data. Choose the pathway that fits, then the first strategy you'd try. Check when all blanks are filled.</p>
+  </header>
+
+<div class="card">
+  <div class="vignette-grid fit-2">
+    <article class="card vignette-card" data-vid="1">
+      <h2 class="visually-hidden">Vignette 1</h2>
+      <p class="vignette-text">Jordan's accuracy is 72% for the first 40 questions of every block and 55% for the last 40. He rarely flags questions and doesn't change answers. He finishes with time to spare.</p>
+      <div class="field">
+        <label for="path-1">Pathway</label>
+        <select id="path-1" class="answer-select" data-kind="pathway" data-vid="1" data-label="Vignette 1 — pathway"></select>
+        <span class="mark" id="mark-path-1" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="strat-1">First strategy</label>
+        <select id="strat-1" class="answer-select" data-kind="strategy" data-vid="1" data-label="Vignette 1 — strategy"></select>
+        <span class="mark" id="mark-strat-1" aria-live="polite"></span>
+      </div>
+      <p class="feedback-line" id="feedback-1" hidden></p>
+    </article>
+
+    <article class="card vignette-card" data-vid="2">
+      <h2 class="visually-hidden">Vignette 2</h2>
+      <p class="vignette-text">Priya's overall accuracy is 68%, but her change log shows 11 answers changed per block, 8 of them from right to wrong. She describes "a voice saying the obvious answer can't be right."</p>
+      <div class="field">
+        <label for="path-2">Pathway</label>
+        <select id="path-2" class="answer-select" data-kind="pathway" data-vid="2" data-label="Vignette 2 — pathway"></select>
+        <span class="mark" id="mark-path-2" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="strat-2">First strategy</label>
+        <select id="strat-2" class="answer-select" data-kind="strategy" data-vid="2" data-label="Vignette 2 — strategy"></select>
+        <span class="mark" id="mark-strat-2" aria-live="polite"></span>
+      </div>
+      <p class="feedback-line" id="feedback-2" hidden></p>
+    </article>
+
+    <article class="card vignette-card" data-vid="3">
+      <h2 class="visually-hidden">Vignette 3</h2>
+      <p class="vignette-text">Marcus scores 74% on untimed practice and 58% on timed mocks. He reports his heart racing before each block and "blanking" on the first few questions.</p>
+      <div class="field">
+        <label for="path-3">Pathway</label>
+        <select id="path-3" class="answer-select" data-kind="pathway" data-vid="3" data-label="Vignette 3 — pathway"></select>
+        <span class="mark" id="mark-path-3" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="strat-3">First strategy</label>
+        <select id="strat-3" class="answer-select" data-kind="strategy" data-vid="3" data-label="Vignette 3 — strategy"></select>
+        <span class="mark" id="mark-strat-3" aria-live="polite"></span>
+      </div>
+      <p class="feedback-line" id="feedback-3" hidden></p>
+    </article>
+
+    <article class="card vignette-card" data-vid="4">
+      <h2 class="visually-hidden">Vignette 4</h2>
+      <p class="vignette-text">Elena has read the review book twice and highlights heavily, but her content-area scores haven't moved in three cycles and she can't say which areas are weakest.</p>
+      <div class="field">
+        <label for="path-4">Pathway</label>
+        <select id="path-4" class="answer-select" data-kind="pathway" data-vid="4" data-label="Vignette 4 — pathway"></select>
+        <span class="mark" id="mark-path-4" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="strat-4">First strategy</label>
+        <select id="strat-4" class="answer-select" data-kind="strategy" data-vid="4" data-label="Vignette 4 — strategy"></select>
+        <span class="mark" id="mark-strat-4" aria-live="polite"></span>
+      </div>
+      <p class="feedback-line" id="feedback-4" hidden></p>
+    </article>
+
+    <article class="card vignette-card" data-vid="5">
+      <h2 class="visually-hidden">Vignette 5</h2>
+      <p class="vignette-text">Sam averages 84 seconds per question, leaves 6–8 items unanswered when time runs out, and his accuracy on answered items is strong at 71%.</p>
+      <div class="field">
+        <label for="path-5">Pathway</label>
+        <select id="path-5" class="answer-select" data-kind="pathway" data-vid="5" data-label="Vignette 5 — pathway"></select>
+        <span class="mark" id="mark-path-5" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="strat-5">First strategy</label>
+        <select id="strat-5" class="answer-select" data-kind="strategy" data-vid="5" data-label="Vignette 5 — strategy"></select>
+        <span class="mark" id="mark-strat-5" aria-live="polite"></span>
+      </div>
+      <p class="feedback-line" id="feedback-5" hidden></p>
+    </article>
+
+    <article class="card vignette-card" data-vid="6">
+      <h2 class="visually-hidden">Vignette 6</h2>
+      <p class="vignette-text">After a difficult question, Dana's next three or four answers are usually wrong even when the content is easy; her overall score recovers later in the block.</p>
+      <div class="field">
+        <label for="path-6">Pathway</label>
+        <select id="path-6" class="answer-select" data-kind="pathway" data-vid="6" data-label="Vignette 6 — pathway"></select>
+        <span class="mark" id="mark-path-6" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for="strat-6">First strategy</label>
+        <select id="strat-6" class="answer-select" data-kind="strategy" data-vid="6" data-label="Vignette 6 — strategy"></select>
+        <span class="mark" id="mark-strat-6" aria-live="polite"></span>
+      </div>
+      <p class="feedback-line" id="feedback-6" hidden></p>
+    </article>
+  </div>
+
+  <p class="hint closing-note">Your own pathway comes from your own numbers — bring your Module 1 metrics to the pathway recommendation step.</p>
+
+  <div class="controls">
+    <button type="button" class="btn primary" id="check-btn">Check Answers</button>
+    <span class="status-line" id="status-line" aria-live="polite"></span>
+  </div>
+</div>
+
+  <section id="summary" class="card" hidden aria-labelledby="summary-heading">
+    <h2 id="summary-heading">How you did</h2>
+    <p class="summary-score" id="summary-score"></p>
+    <div id="summary-detail"></div>
+    <p class="hint" id="summary-note"></p>
+  </section>
+</main>
+
+<div id="live-region" class="visually-hidden" role="status" aria-live="polite"></div>
+
+<footer class="finish-bar">
+  <button type="button" id="finish-button" class="finish-button" disabled>Finish</button>
+</footer>
+
+<script>
+/* ---- SCORM 1.2 wrapper. Degrades silently to standalone preview. -------- */
+const SCORM = (() => {
+  let api = null, initialized = false, finished = false;
+  function findApi(win) {
+    let current = win, attempts = 0;
+    try {
+      while (current && !current.API && current.parent && current.parent !== current && attempts < 500) {
+        attempts += 1; current = current.parent;
+      }
+      if (current && current.API) return current.API;
+      if (win.opener && !win.opener.closed) return findApi(win.opener);
+    } catch (e) { return null; }
+    return null;
+  }
+  function call(method, ...args) {
+    if (!api || typeof api[method] !== "function") return "false";
+    try { return api[method](...args); } catch (e) { return "false"; }
+  }
+  function init() {
+    if (initialized) return true;
+    api = findApi(window);
+    if (!api) return false;
+    initialized = call("LMSInitialize", "") === "true";
+    if (initialized) {
+      const prior = call("LMSGetValue", "cmi.core.lesson_status");
+      if (prior !== "completed" && prior !== "passed") {
+        call("LMSSetValue", "cmi.core.lesson_status", "incomplete");
+      }
+      call("LMSSetValue", "cmi.core.score.min", "0");
+      call("LMSSetValue", "cmi.core.score.max", "100");
+      call("LMSCommit", "");
+    }
+    return initialized;
+  }
+  function setScore(raw) {
+    if (!initialized) return;
+    call("LMSSetValue", "cmi.core.score.raw", String(raw));
+    call("LMSCommit", "");
+  }
+  function finishActivity(score) {
+    if (finished) return;
+    if (initialized) {
+      call("LMSSetValue", "cmi.core.lesson_status", "completed");
+      if (score !== null && score !== undefined) call("LMSSetValue", "cmi.core.score.raw", String(score));
+      call("LMSCommit", "");
+      call("LMSFinish", "");
+    }
+    finished = true;
+  }
+  function unloadSafety() {
+    if (finished || !initialized) return;
+    call("LMSCommit", ""); call("LMSFinish", ""); finished = true;
+  }
+  window.addEventListener("pagehide", unloadSafety);
+  window.addEventListener("beforeunload", unloadSafety);
+  return { init, setScore, finishActivity };
+})();
+SCORM.init();
+
+/* ---- Activity API -------------------------------------------------------
+   The only surface an activity script needs. Handles the Finish button,
+   the live region, the score, and the completion summary, so no activity
+   re-implements them (or gets them subtly wrong).                        */
+const Activity = (() => {
+  const finishBtn = document.getElementById("finish-button");
+  const live = document.getElementById("live-region");
+  const summaryEl = document.getElementById("summary");
+  const scoreEl = document.getElementById("summary-score");
+  const detailEl = document.getElementById("summary-detail");
+  const noteEl = document.getElementById("summary-note");
+  let firstScore = null;   // frozen on first completion so review passes can't inflate it
+  let ready = false;
+
+  function announce(msg) { live.textContent = ""; setTimeout(() => { live.textContent = msg; }, 40); }
+
+  function setReady(on, msg) {
+    ready = !!on;
+    finishBtn.disabled = !ready;
+    if (ready) {
+      finishBtn.classList.add("enabled-pop");
+      setTimeout(() => finishBtn.classList.remove("enabled-pop"), 1400);
+      if (msg) announce(msg);
+    }
+  }
+
+  /* Report the truth: right and missed are arrays of plain strings.
+     Passing neither still renders an honest "you finished" line.        */
+  function summarize({ score = null, right = [], missed = [], note = "" } = {}) {
+    if (firstScore === null && score !== null) firstScore = score;
+    const shown = firstScore === null ? null : firstScore;
+    if (shown !== null) {
+      const total = right.length + missed.length;
+      scoreEl.textContent = total
+        ? `${right.length} of ${total} correct on your first attempt — ${shown}%`
+        : `First-attempt score: ${shown}%`;
+    } else {
+      scoreEl.textContent = "Activity complete.";
+    }
+    detailEl.innerHTML = "";
+    const group = (title, items, cls) => {
+      if (!items.length) return;
+      const wrap = document.createElement("div");
+      wrap.className = "summary-group";
+      const h = document.createElement("h3");
+      h.innerHTML = `<span class="mark ${cls === "ok" ? "ok" : "no"}">${cls === "ok" ? "✓" : "✗"}</span>${title}`;
+      const ul = document.createElement("ul");
+      ul.className = "summary-list";
+      items.forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      wrap.appendChild(h); wrap.appendChild(ul); detailEl.appendChild(wrap);
+    };
+    group(`You got these right (${right.length})`, right, "ok");
+    group(`You missed these (${missed.length})`, missed, "no");
+    noteEl.textContent = note || "";
+    summaryEl.hidden = false;
+    summaryEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (shown !== null) SCORM.setScore(shown);
+  }
+
+  finishBtn.addEventListener("click", () => {
+    if (!ready) return;
+    SCORM.finishActivity(firstScore);
+    finishBtn.disabled = true;
+    finishBtn.textContent = "Finished ✓";
+    announce("Activity finished and reported as complete.");
+  });
+
+  return { setReady, announce, summarize, get score() { return firstScore; } };
+})();
+
+/* ---- Multi-part coordinator --------------------------------------------
+   For modules that merge two activities into one. Each part reports here
+   instead of calling Activity.setReady / Activity.summarize itself, and only
+   the last part to finish unlocks Finish. Without this, part one would enable
+   the Finish button and a student could submit half an activity.         */
+const Parts = (() => {
+  let expected = 0;
+  const results = new Map();
+  const listeners = [];
+
+  function expect(n) { expected = n; }
+  function isDone(i) { return results.has(i); }
+  function onDone(fn) { listeners.push(fn); }
+
+  function done(index, { score = null, right = [], missed = [], label = "" } = {}) {
+    if (results.has(index)) return;                 // first result stands
+    results.set(index, { score, right, missed, label });
+    listeners.forEach(fn => { try { fn(index); } catch (e) {} });
+    if (results.size < expected) {
+      Activity.announce(`Part ${index} complete. Part ${index + 1} is now available.`);
+      return;
+    }
+    // Merge both parts' results, keeping each item attributed to its part so
+    // the summary says which half a student actually struggled with.
+    // NB: these locals must NOT be named `right` / `missed` — those are already
+    // bound by this function's destructured parameter, and redeclaring them with
+    // const is a SyntaxError that kills the whole inline script silently.
+    const allRight = [], allMissed = [];
+    let weighted = 0, items = 0;
+    [...results.entries()].sort((a, b) => a[0] - b[0]).forEach(([i, r]) => {
+      const tag = r.label ? `${r.label}: ` : `Part ${i}: `;
+      r.right.forEach(t => allRight.push(tag + t));
+      r.missed.forEach(t => allMissed.push(tag + t));
+      const n = r.right.length + r.missed.length;
+      if (r.score !== null && n) { weighted += r.score * n; items += n; }
+      else if (r.score !== null) { weighted += r.score; items += 1; }
+    });
+    const finalScore = items ? Math.round(weighted / items) : null;
+    Activity.setReady(true, "Both parts complete. You can finish the activity.");
+    Activity.summarize({
+      score: finalScore, right: allRight, missed: allMissed,
+      note: "This activity had two parts; the summary above covers both.",
+    });
+  }
+  return { expect, done, isDone, onDone };
+})();
+
+(function () {
+  "use strict";
+
+  var PATHWAYS = [
+    "Pacing, Attention & Exam Endurance",
+    "Answer Changing, Confidence & Second-Guessing",
+    "Test Anxiety & Performance Under Pressure",
+    "Study Efficiency & Preparation Strategy"
+  ];
+
+  var STRATEGY_POOL = [
+    "Set a per-question time cap and practice with a visible timer",
+    "Commit to the first defensible answer; only change with a concrete reason",
+    "Do a 60-second reset (breathing, posture) after any hard item",
+    "Replace passive re-reading with mixed practice sets and rationale review",
+    "Practice full-length timed blocks with planned breaks",
+    "Keep a change log: record every changed answer and whether it helped",
+    "Rehearse the exam morning routine and arrive with a pre-exam script",
+    "Schedule study by weakest content area first, using the data, not the textbook order"
+  ];
+
+  var VIGNETTES = {
+    1: {
+      pathway: "Pacing, Attention & Exam Endurance",
+      strategy: "Practice full-length timed blocks with planned breaks",
+      tell: "Late-block decline with no time pressure = endurance, not knowledge."
+    },
+    2: {
+      pathway: "Answer Changing, Confidence & Second-Guessing",
+      strategy: "Commit to the first defensible answer; only change with a concrete reason",
+      tell: "Frequent right-to-wrong changes driven by doubt, not new evidence, = second-guessing, not a knowledge gap."
+    },
+    3: {
+      pathway: "Test Anxiety & Performance Under Pressure",
+      strategy: "Rehearse the exam morning routine and arrive with a pre-exam script",
+      tell: "Strong untimed scores that drop under time pressure, plus physical anxiety symptoms, = performance anxiety, not a content gap."
+    },
+    4: {
+      pathway: "Study Efficiency & Preparation Strategy",
+      strategy: "Replace passive re-reading with mixed practice sets and rationale review",
+      tell: "Hours of passive review with no score movement and no sense of weak areas = an inefficient study method, not a content gap."
+    },
+    5: {
+      pathway: "Pacing, Attention & Exam Endurance",
+      strategy: "Set a per-question time cap and practice with a visible timer",
+      tell: "Slow per-question pace with strong accuracy on answered items = a pacing problem, not a knowledge problem."
+    },
+    6: {
+      pathway: "Test Anxiety & Performance Under Pressure",
+      strategy: "Do a 60-second reset (breathing, posture) after any hard item",
+      tell: "A run of wrong answers right after one hard question, that recovers later, = disruption from stress, not lost knowledge."
+    }
+  };
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  var shuffledStrategies = shuffle(STRATEGY_POOL);
+
+  function fillSelect(select, options, placeholder, correctValue) {
+    var frag = document.createDocumentFragment();
+    var blank = document.createElement("option");
+    blank.value = "";
+    blank.textContent = placeholder;
+    frag.appendChild(blank);
+    options.forEach(function (opt) {
+      var o = document.createElement("option");
+      o.value = opt;
+      o.textContent = opt;
+      frag.appendChild(o);
+    });
+    select.appendChild(frag);
+    select.setAttribute("data-answer", correctValue);
+  }
+
+  var vids = Object.keys(VIGNETTES);
+  vids.forEach(function (vid) {
+    var data = VIGNETTES[vid];
+    var pathSel = document.getElementById("path-" + vid);
+    var stratSel = document.getElementById("strat-" + vid);
+    fillSelect(pathSel, PATHWAYS, "Choose a pathway…", data.pathway);
+    fillSelect(stratSel, shuffledStrategies, "Choose a strategy…", data.strategy);
+  });
+
+  var allSelects = Array.prototype.slice.call(document.querySelectorAll(".answer-select"));
+  var checkBtn = document.getElementById("check-btn");
+  var statusLine = document.getElementById("status-line");
+
+  var attemptCount = 0;
+  var MAX_ATTEMPTS = 2;
+  var firstAttemptResult = {}; // label -> boolean
+  var completed = false;
+
+  allSelects.forEach(function (sel) {
+    sel.addEventListener("change", function () {
+      if (sel.disabled) return;
+      if (sel.classList.contains("correct") || sel.classList.contains("incorrect")) {
+        sel.classList.remove("correct", "incorrect");
+        sel.removeAttribute("aria-invalid");
+        var markId = "mark-" + sel.id;
+        var mark = document.getElementById(markId);
+        if (mark) mark.textContent = "";
+      }
+    });
+  });
+
+  function markFor(sel) {
+    return document.getElementById("mark-" + sel.id);
+  }
+
+  function evaluateSelect(sel, recordFirstAttempt) {
+    var correctValue = sel.getAttribute("data-answer");
+    var isCorrect = sel.value === correctValue;
+    var label = sel.getAttribute("data-label");
+
+    if (recordFirstAttempt && !(label in firstAttemptResult)) {
+      firstAttemptResult[label] = isCorrect;
+    }
+
+    var mark = markFor(sel);
+    if (isCorrect) {
+      sel.classList.add("correct");
+      sel.classList.remove("incorrect");
+      sel.removeAttribute("aria-invalid");
+      sel.disabled = true;
+      if (mark) { mark.textContent = "✓ Correct"; mark.className = "mark ok"; }
+    } else {
+      sel.classList.add("incorrect");
+      sel.classList.remove("correct");
+      sel.setAttribute("aria-invalid", "true");
+      if (mark) { mark.textContent = "✗ Not yet"; mark.className = "mark no"; }
+    }
+    return isCorrect;
+  }
+
+  function revealAnswer(sel) {
+    var correctValue = sel.getAttribute("data-answer");
+    sel.value = correctValue;
+    sel.disabled = true;
+    var mark = markFor(sel);
+    if (mark) { mark.textContent = "✗ Correct answer: " + correctValue; mark.className = "mark no"; }
+  }
+
+  function showFeedback() {
+    vids.forEach(function (vid) {
+      var p = document.getElementById("feedback-" + vid);
+      if (p) {
+        p.textContent = VIGNETTES[vid].tell;
+        p.hidden = false;
+      }
+    });
+  }
+
+  function buildRightMissed() {
+    var right = [];
+    var missed = [];
+    Object.keys(firstAttemptResult).forEach(function (label) {
+      if (firstAttemptResult[label]) right.push(label);
+      else missed.push(label);
+    });
+    return { right: right, missed: missed };
+  }
+
+  function finishActivity() {
+    if (completed) return;
+    completed = true;
+    var rm = buildRightMissed();
+    var score = Math.round((rm.right.length / 12) * 100);
+    Activity.summarize({
+      score: score,
+      right: rm.right,
+      missed: rm.missed,
+      note: "Your own pathway comes from your own numbers — bring your Module 1 metrics to the pathway recommendation step."
+    });
+    Activity.setReady(true, "All 12 pathways and strategies correct.");
+    statusLine.textContent = "All correct — Finish is now enabled.";
+    checkBtn.disabled = true;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (completed || attemptCount >= MAX_ATTEMPTS) return;
+    attemptCount += 1;
+    var recordFirstAttempt = attemptCount === 1;
+
+    var unresolved = allSelects.filter(function (sel) { return !sel.disabled; });
+    if (unresolved.some(function (sel) { return sel.value === ""; })) {
+      statusLine.textContent = "Choose an answer for every blank before checking.";
+      Activity.announce("Some blanks are still empty.");
+      attemptCount -= 1;
+      return;
+    }
+
+    var allCorrect = true;
+    allSelects.forEach(function (sel) {
+      if (sel.disabled) return; // already locked correct
+      var ok = evaluateSelect(sel, recordFirstAttempt);
+      if (!ok) allCorrect = false;
+    });
+
+    showFeedback();
+
+    if (allCorrect) {
+      finishActivity();
+      return;
+    }
+
+    if (attemptCount >= MAX_ATTEMPTS) {
+      allSelects.forEach(function (sel) {
+        if (!sel.disabled) revealAnswer(sel);
+      });
+      checkBtn.disabled = true;
+      checkBtn.textContent = "Attempts used";
+      statusLine.textContent = "Second attempt complete — correct answers are shown above.";
+      Activity.announce("Second attempt complete. Correct answers are now shown for any missed items.");
+    } else {
+      checkBtn.textContent = "Check Answers (final attempt)";
+      statusLine.textContent = "Some answers need another look. You have one more attempt.";
+      Activity.announce("Some answers are incorrect. One more attempt is allowed.");
+    }
+  });
+})();
+</script>
+</body>
+</html>

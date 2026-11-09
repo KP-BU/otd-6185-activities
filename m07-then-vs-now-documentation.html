@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Then vs. Now — OTD 6185 Module 7</title>
+<title>Then vs. Now — OTD 6185 Module 6</title>
 <style>
   :root {
     --green: #154734; --gold: #FFB81C;
@@ -222,48 +222,86 @@
   .tvn-pair { grid-template-columns: 1fr 1fr; }
   .tvn-prompts.fit-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 }
+.tvn-table-wrap { overflow-x: auto; }
+.tvn-domain { border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; padding: 10px 12px 4px; margin: 0 0 12px; }
+.tvn-domain legend { float: left; width: 100%; font-weight: 700; color: var(--green); padding: 0; margin: 0 0 4px; }
+.tvn-domain legend + * { clear: both; }
+.tvn-item { padding: 8px 0; border-bottom: 1px dashed rgba(0,0,0,0.1); }
+.tvn-item:last-of-type { border-bottom: 0; }
+.tvn-item-text { margin: 0 0 6px; font-size: 0.95rem; }
+.tvn-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.tvn-opt { position: relative; display: block; cursor: pointer; }
+.tvn-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.tvn-opt span { display: block; text-align: center; border: 2px solid var(--line); border-radius: 6px; padding: 6px 2px; font-weight: 800; background: #fff; line-height: 1.15; }
+.tvn-opt small { display: block; font-weight: 600; font-size: 0.72rem; color: var(--muted); }
+.tvn-opt input:checked + span { border-color: var(--green); background: var(--soft-green); color: var(--green); }
+.tvn-opt input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+.tvn-domain-score { font-weight: 700; color: var(--green); margin: 8px 0 6px; }
+.tvn-field select { width: 100%; }
+@media (max-width: 520px) { .tvn-scale { gap: 4px; } .tvn-opt span { padding: 6px 0; } .tvn-opt small { font-size: 0.56rem; letter-spacing: -0.02em; overflow-wrap: anywhere; } }
 </style>
 </head>
 <body>
 <main>
   
   <header class="card">
-    <span class="eyebrow">Module 7 · Reassess & Prepare for NBCOT</span>
+    <span class="eyebrow">Module 6 · From Preparation to Practice</span>
     <h1>Then vs. now: what has changed?</h1>
-    <p class="lede">Enter your baseline and final numbers, then answer the reflection prompts. The readiness checklist at the end unlocks when every section is complete. Nothing is sent anywhere — copy your answers into your final reflection.</p>
+    <p class="lede">Compare your Module 1 baseline with where you are now: TrueLearn, the NBCOT Self-Assessment, and a retake of the Test Performance Self-Assessment. Change and percent change are calculated for you, and you can download everything as an Excel-ready file. Nothing is sent anywhere.</p>
   </header>
 
 <div class="tvn-progress" aria-label="Form progress">
-  <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0" aria-labelledby="tvn-progress-label">
+  <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="tvn-progress-label">
     <div class="progress-fill" id="tvn-progress-fill" style="width:0%"></div>
   </div>
-  <span class="tvn-progress-label" id="tvn-progress-label">0 of 18 required fields complete</span>
+  <span class="tvn-progress-label" id="tvn-progress-label">0 required fields complete</span>
 </div>
-
-<section class="card tvn-section" aria-labelledby="tvn-h-s1">
-  <h2 id="tvn-h-s1">Section 1 — Baseline (Module 1) vs Final (Module 7) numbers</h2>
-  <p class="hint">Enter each number from your Module 1 baseline and your Module 7 reassessment. Every field is required.</p>
-  <div class="tvn-metrics fit-2" id="tvn-metrics"></div>
+<section class="card tvn-section" aria-labelledby="tvn-h-s0">
+  <h2 id="tvn-h-s0">Before you start</h2>
+  <p class="hint">Have three things open: your Module 1 Baseline NBCOT Readiness Profile, your final TrueLearn mock exam report, and your final NBCOT Entry-Level OTR Self-Assessment summary. You'll retake the Test Performance Self-Assessment on this page.</p>
+  <div class="tvn-field" id="wrap-student">
+    <label for="student">Your name (it appears on your downloaded data file)</label>
+    <input type="text" id="student" autocomplete="name" aria-describedby="msg-student">
+    <div class="tvn-msg" id="msg-student"></div>
+  </div>
 </section>
-
+<section class="card tvn-section" aria-labelledby="tvn-h-s1">
+  <h2 id="tvn-h-s1">Section 1 — TrueLearn mock exam: baseline vs final</h2>
+  <p class="hint">Baseline numbers are on your Module 1 Baseline NBCOT Readiness Profile (questions 1–11). Final numbers come from your final TrueLearn mock exam. Every field is required.</p>
+  <div class="tvn-metrics fit-2" id="tvn-metrics-tl"></div>
+</section>
 <section class="card tvn-section" aria-labelledby="tvn-h-s2">
-  <h2 id="tvn-h-s2">Section 2 — What changed</h2>
-  <p class="hint">Computed automatically from Section 1 (final − baseline). Rows fill in as you enter valid numbers.</p>
+  <h2 id="tvn-h-s2">Section 2 — NBCOT Self-Assessment: baseline vs final</h2>
+  <p class="hint">Use the Summary Report from each NBCOT Entry-Level OTR Self-Assessment. Baseline counts are questions 13–16 on your readiness profile.</p>
+  <div class="tvn-metrics fit-2" id="tvn-metrics-nb"></div>
+</section>
+<section class="card tvn-section" aria-labelledby="tvn-h-s3">
+  <h2 id="tvn-h-s3">Section 3 — Test Performance Self-Assessment</h2>
+  <p class="hint"><strong>Step 1.</strong> Enter your six baseline domain scores (questions 20–25 on your readiness profile; each is out of 20).</p>
+  <div class="tvn-tpsa-base" id="tvn-tpsa-base"></div>
+  <p class="hint" style="margin-top:12px"><strong>Step 2.</strong> Retake the self-assessment. Think about your typical experience on exams and practice exams since Module 1. For each statement, choose how often it happens: 0 = Never, 1 = Rarely, 2 = Sometimes, 3 = Often, 4 = Almost Always. Your final domain scores are added up for you.</p>
+  <div id="tvn-tpsa-items"></div>
+  <p class="hint">Higher scores mean a greater potential need for support in that area. Score ranges are preliminary course guidelines, not validated diagnostic cut scores.</p>
+</section>
+<section class="card tvn-section" aria-labelledby="tvn-h-s4">
+  <h2 id="tvn-h-s4">Section 4 — What changed</h2>
+  <p class="hint">Computed for you from Sections 1–3. Change = final − baseline. Percent change = (final − baseline) ÷ baseline × 100. Rows fill in as you enter valid numbers.</p>
+  <div class="tvn-table-wrap">
   <table class="tvn-table" id="tvn-delta-table">
     <thead>
-      <tr><th scope="col">Metric</th><th scope="col">Baseline</th><th scope="col">Final</th><th scope="col">Change</th><th scope="col">What it means</th></tr>
+      <tr><th scope="col">Measure</th><th scope="col">Baseline</th><th scope="col">Final</th><th scope="col">Change</th><th scope="col">% change</th><th scope="col">Direction</th></tr>
     </thead>
     <tbody id="tvn-delta-body"></tbody>
   </table>
+  </div>
   <div class="tvn-prompt" id="wrap-p-trust">
     <label for="p-trust">Which change do you trust most, and why? Point to the specific number.</label>
     <textarea id="p-trust" rows="5" aria-describedby="count-p-trust"></textarea>
     <div class="tvn-count" id="count-p-trust" aria-live="polite">0 words (at least 25 required)</div>
   </div>
 </section>
-
-<section class="card tvn-section" aria-labelledby="tvn-h-s3">
-  <h2 id="tvn-h-s3">Section 3 — Priorities and readiness</h2>
+<section class="card tvn-section" aria-labelledby="tvn-h-s5">
+  <h2 id="tvn-h-s5">Section 5 — Priorities and readiness</h2>
   <p class="hint">Each response needs at least 25 words.</p>
   <div class="tvn-prompts fit-2">
     <div class="tvn-prompt" id="wrap-p-pathway">
@@ -283,25 +321,24 @@
     </div>
   </div>
 </section>
-
 <section class="card tvn-section tvn-locked" id="tvn-checklist-section" aria-labelledby="tvn-h-check">
   <h2 id="tvn-h-check">Readiness checklist</h2>
   <p class="hint" id="tvn-check-hint">Locked until every field above is complete. Tick all 8 to finish.</p>
   <ul class="tvn-check" id="tvn-check-list"></ul>
   <p class="tvn-status" id="tvn-status" role="status"></p>
 </section>
-
 <section class="card tvn-section" aria-labelledby="tvn-h-copy">
-  <h2 id="tvn-h-copy">Copy my answers</h2>
-  <p class="hint">Assembles everything you entered into plain text so you can paste it into the Final NBCOT Readiness Reflection.</p>
+  <h2 id="tvn-h-copy">Save my results</h2>
+  <p class="hint"><strong>Download for Excel</strong> saves a .csv file that opens in Excel: one header row and one row of your data, with every baseline, final, change and percent-change value in its own column. <strong>Copy row for Excel</strong> copies the same row so you can paste it straight into a spreadsheet. <strong>Copy my answers</strong> assembles everything as plain text for your Final NBCOT Readiness Reflection. Nothing is sent anywhere.</p>
   <div class="controls">
-    <button type="button" class="btn primary" id="tvn-copy-btn">Copy my answers</button>
+    <button type="button" class="btn primary" id="tvn-csv-btn">Download for Excel (.csv)</button>
+    <button type="button" class="btn" id="tvn-tsv-btn">Copy row for Excel</button>
+    <button type="button" class="btn" id="tvn-copy-btn">Copy my answers</button>
   </div>
-  <label for="tvn-copy-out" class="visually-hidden">Assembled answers (plain text)</label>
+  <label for="tvn-copy-out" class="visually-hidden">Assembled answers</label>
   <textarea class="tvn-copy-out" id="tvn-copy-out" readonly aria-describedby="tvn-copy-msg"></textarea>
   <p class="tvn-status" id="tvn-copy-msg" role="status"></p>
 </section>
-
   <section id="summary" class="card" hidden aria-labelledby="summary-heading">
     <h2 id="summary-heading">How you did</h2>
     <p class="summary-score" id="summary-score"></p>
@@ -494,277 +531,389 @@ const Parts = (() => {
 })();
 
 (function () {
-  var PASS = 450;
   var MIN_WORDS = 25;
-
-  // higherIsBetter: true = a rise is an improvement; false = a fall is an improvement
-  var metrics = [
-    { id: 'scaled', label: 'TrueLearn mock scaled score', range: '0–800; pass line 450', min: 0, max: 800, unit: '', higherIsBetter: true },
-    { id: 'pct', label: 'Overall percent correct', range: '0–100', min: 0, max: 100, unit: '%', higherIsBetter: true },
-    { id: 'lowarea', label: 'Lowest content area', range: 'name the area', text: true },
-    { id: 'lowpct', label: 'Lowest content area percent', range: '0–100', min: 0, max: 100, unit: '%', higherIsBetter: true },
-    { id: 'secs', label: 'Average seconds per question', range: '10–200', min: 10, max: 200, unit: ' s', higherIsBetter: false },
-    { id: 'changed', label: 'Answers changed right→wrong per block', range: '0–50', min: 0, max: 50, unit: '', higherIsBetter: false },
-    { id: 'domains', label: 'NBCOT Self-Assessment: domains rated "needs work"', range: '0–4', min: 0, max: 4, unit: '', higherIsBetter: false }
+  // dir: 'up' = a rise is an improvement; 'down' = a fall is an improvement; null = neutral (interpret yourself)
+  var TL = [
+    { id: 'pct', label: 'TrueLearn overall percent correct', range: '0–100', min: 0, max: 100, unit: '%', dir: 'up' },
+    { id: 'hipct', label: 'Highest-performing NBCOT domain percent', range: '0–100', min: 0, max: 100, unit: '%', dir: 'up' },
+    { id: 'lowdom', label: 'Lowest-performing NBCOT domain', range: 'choose', select: ['Domain 1', 'Domain 2', 'Domain 3', 'Domain 4'] },
+    { id: 'lowpct', label: 'Lowest-performing NBCOT domain percent', range: '0–100', min: 0, max: 100, unit: '%', dir: 'up' },
+    { id: 'mins', label: 'Total time on the mock exam (minutes)', range: '1–600', min: 1, max: 600, unit: ' min', dir: null },
+    { id: 'secs', label: 'Average seconds per question', range: '1–600', min: 1, max: 600, unit: ' s', dir: null },
+    { id: 'chg', label: 'Answers changed (total)', range: '0–300', min: 0, max: 300, unit: '', dir: 'down' },
+    { id: 'ic', label: 'Changed incorrect → correct', range: '0–300', min: 0, max: 300, unit: '', dir: 'up' },
+    { id: 'ci', label: 'Changed correct → incorrect', range: '0–300', min: 0, max: 300, unit: '', dir: 'down' },
+    { id: 'ii', label: 'Changed incorrect → incorrect', range: '0–300', min: 0, max: 300, unit: '', dir: 'down' }
   ];
+  var NB = [
+    { id: 'hipri', label: 'Tasks identified as HIGH PRIORITY learning needs', range: '0–999', min: 0, max: 999, unit: '', dir: 'down' },
+    { id: 'knw', label: 'Tasks: more knowledge and skills needed', range: '0–999', min: 0, max: 999, unit: '', dir: 'down' },
+    { id: 'clin', label: 'Tasks: more clinical skills needed', range: '0–999', min: 0, max: 999, unit: '', dir: 'down' },
+    { id: 'comp', label: 'Tasks where you feel competent', range: '0–999', min: 0, max: 999, unit: '', dir: 'up' }
+  ];
+  var TPSA = [
+    { id: 'd1', name: 'Pacing & Time Management', items: [
+      'I rush through questions during long exams.',
+      'I spend too much time on difficult questions.',
+      'I have difficulty maintaining an appropriate pace throughout an exam.',
+      'I become concerned about how much time I have remaining during an exam.',
+      'My pace changes significantly as an exam progresses.'] },
+    { id: 'd2', name: 'Answer Changing & Second-Guessing', items: [
+      'I change answers after initially selecting a response.',
+      'I second-guess answers even when I initially feel confident in my choice.',
+      'I have difficulty choosing between two plausible answers.',
+      'I continue reconsidering a question after I have selected an answer.',
+      'I change an answer because I become uncertain rather than because I identified new information or reasoning.'] },
+    { id: 'd3', name: 'Question Interpretation & Overthinking', items: [
+      'I overthink exam questions.',
+      'I read additional information into a question that is not provided.',
+      'I have difficulty identifying what a question is actually asking.',
+      'I focus on details that may not be relevant to answering the question.',
+      'I have difficulty identifying key words or cues that indicate what the question is asking me to prioritize.'] },
+    { id: 'd4', name: 'Attention & Exam Endurance', items: [
+      'I have difficulty maintaining attention during long exams.',
+      'I notice my concentration decreasing as an exam progresses.',
+      'Mental fatigue makes it harder for me to reason through questions later in an exam.',
+      'I find myself rereading questions because my attention has drifted.',
+      'After encountering several difficult questions, I have difficulty refocusing.'] },
+    { id: 'd5', name: 'Test Anxiety & Performance Under Pressure', items: [
+      'I experience significant anxiety before or during high-stakes exams.',
+      'Anxiety makes it difficult for me to retrieve information that I know.',
+      'Physical symptoms of anxiety interfere with my ability to concentrate during exams.',
+      'When I encounter difficult questions, I begin worrying about my overall exam performance.',
+      'I have difficulty recovering after becoming anxious or overwhelmed during an exam.'] },
+    { id: 'd6', name: 'Study Efficiency & Preparation Strategy', items: [
+      'I have difficulty deciding which content areas should receive the most study time.',
+      'I rely heavily on reviewing content rather than actively testing myself with practice questions.',
+      'I move on from practice questions without fully reviewing why an answer was correct or incorrect.',
+      'I have difficulty using practice-question performance data to guide what I study next.',
+      'I have difficulty maintaining a realistic and consistent exam-preparation plan.'] }
+  ];
+  var SCALE = ['Never', 'Rarely', 'Sometimes', 'Often', 'Almost Always'];
+  function band(n) { return n <= 4 ? 'Low concern' : n <= 9 ? 'Mild concern' : n <= 14 ? 'Moderate concern' : 'High concern'; }
 
   var prompts = ['p-trust', 'p-pathway', 'p-priorities', 'p-ready'];
   var promptLabels = {
-    'p-trust': 'Section 2 — Which change do you trust most, and why?',
-    'p-pathway': 'Section 3A — Which pathway did you work on, and what evidence shows it helped — or didn\'t?',
-    'p-priorities': 'Section 3B — Two remaining priorities and what you will do in the next seven days',
-    'p-ready': 'Section 3C — How ready are you, and what would change that number?'
+    'p-trust': 'Which change do you trust most, and why?',
+    'p-pathway': 'Which pathway did you work on, and what evidence shows it helped, or didn\'t?',
+    'p-priorities': 'Two remaining priorities and what you will do in the next seven days',
+    'p-ready': 'How ready are you, and what would change that number?'
   };
-
   var checklist = [
-    'I know my scaled-score trend and where it sits against 450.',
+    'I know how my overall TrueLearn percent and my lowest domain have changed since Module 1.',
     'My two weakest content areas are named and scheduled.',
     'I have a per-question time cap I practise with.',
     'I have a rule for when I may change an answer.',
     'I have a reset routine for after a hard question.',
-    'I have completed at least one full-length timed exam since the intensive.',
+    'I have completed at least one full-length timed exam since your baseline mock exam.',
     'My exam date, location, ID and arrival plan are confirmed.',
     'My error log has an entry for my last practice session with a next step.'
   ];
 
-  var REQUIRED = metrics.length * 2 + prompts.length; // 14 + 4 = 18
-  var values = {};      // numeric values (or text) keyed by fieldId
-  var valid = {};       // fieldId -> boolean
-  var summarized = false;
-  var wasReady = false;
+  var ALL = TL.concat(NB);
+  var NUM = ALL.filter(function (m) { return !m.select; });
+  var REQUIRED = 1 + ALL.length * 2 + TPSA.length + 30 + prompts.length;
+  var values = {}, valid = {};
+  var summarized = false, wasReady = false;
 
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function $(id) { return document.getElementById(id); }
 
-  // ---------- Build Section 1 ----------
-  var metricsEl = $('tvn-metrics');
-  var html = '';
-  metrics.forEach(function (m) {
-    html += '<div class="tvn-metric"><p class="tvn-metric-title">' + esc(m.label) + ' <span class="tvn-metric-range">(' + esc(m.range) + ')</span></p><div class="tvn-pair">';
-    ['baseline', 'final'].forEach(function (when) {
-      var fid = m.id + '-' + when;
-      var nice = when === 'baseline' ? 'Baseline (Module 1)' : 'Final (Module 7)';
-      html += '<div class="tvn-field" id="wrap-' + fid + '"><label for="' + fid + '">' + nice + '</label>';
-      if (m.text) {
-        html += '<input type="text" id="' + fid + '" autocomplete="off" aria-describedby="msg-' + fid + '">';
-      } else {
-        html += '<input type="number" id="' + fid + '" inputmode="numeric" min="' + m.min + '" max="' + m.max + '" step="1" aria-describedby="msg-' + fid + '">';
-      }
-      html += '<div class="tvn-msg" id="msg-' + fid + '"></div></div>';
+  // ---------- Build Sections 1–2 ----------
+  function buildMetrics(list, el) {
+    var html = '';
+    list.forEach(function (m) {
+      html += '<div class="tvn-metric"><p class="tvn-metric-title">' + esc(m.label) + ' <span class="tvn-metric-range">(' + esc(m.range) + ')</span></p><div class="tvn-pair">';
+      ['baseline', 'final'].forEach(function (when) {
+        var fid = m.id + '-' + when;
+        html += '<div class="tvn-field" id="wrap-' + fid + '"><label for="' + fid + '">' + (when === 'baseline' ? 'Baseline (Module 1)' : 'Final') + '</label>';
+        if (m.select) {
+          html += '<select id="' + fid + '" aria-describedby="msg-' + fid + '"><option value="">Choose…</option>' + m.select.map(function (o) { return '<option>' + esc(o) + '</option>'; }).join('') + '</select>';
+        } else {
+          html += '<input type="number" id="' + fid + '" inputmode="decimal" min="' + m.min + '" max="' + m.max + '" step="any" aria-describedby="msg-' + fid + '">';
+        }
+        html += '<div class="tvn-msg" id="msg-' + fid + '"></div></div>';
+      });
+      html += '</div></div>';
     });
-    html += '</div></div>';
-  });
-  metricsEl.innerHTML = html;
+    el.innerHTML = html;
+  }
+  buildMetrics(TL, $('tvn-metrics-tl'));
+  buildMetrics(NB, $('tvn-metrics-nb'));
 
-  // ---------- Build checklist ----------
-  var checkHtml = '';
-  checklist.forEach(function (text, i) {
-    var cid = 'chk-' + (i + 1);
-    checkHtml += '<li><input type="checkbox" id="' + cid + '" disabled><label for="' + cid + '">' + esc(text) + '</label></li>';
+  // ---------- Build Section 3 ----------
+  var bh = '<div class="tvn-metrics fit-2">';
+  TPSA.forEach(function (d, i) {
+    var fid = d.id + '-baseline';
+    bh += '<div class="tvn-field" id="wrap-' + fid + '"><label for="' + fid + '">' + (i + 1) + '. ' + esc(d.name) + ' — baseline (0–20)</label>' +
+      '<input type="number" id="' + fid + '" inputmode="numeric" min="0" max="20" step="1" aria-describedby="msg-' + fid + '"><div class="tvn-msg" id="msg-' + fid + '"></div></div>';
   });
-  $('tvn-check-list').innerHTML = checkHtml;
+  $('tvn-tpsa-base').innerHTML = bh + '</div>';
+
+  var ih = '', q = 0;
+  TPSA.forEach(function (d, di) {
+    ih += '<fieldset class="tvn-domain"><legend>Domain ' + (di + 1) + ': ' + esc(d.name) + '</legend>';
+    d.items.forEach(function (text) {
+      q++;
+      var name = 'q' + q;
+      ih += '<div class="tvn-item" role="radiogroup" aria-labelledby="lbl-' + name + '"><p class="tvn-item-text" id="lbl-' + name + '">' + q + '. ' + esc(text) + '</p><div class="tvn-scale">';
+      SCALE.forEach(function (s, v) {
+        ih += '<label class="tvn-opt"><input type="radio" name="' + name + '" value="' + v + '"><span>' + v + ' <small>' + s + '</small></span></label>';
+      });
+      ih += '</div></div>';
+    });
+    ih += '<p class="tvn-domain-score" id="score-' + d.id + '" aria-live="polite">Final domain score: — / 20</p></fieldset>';
+  });
+  $('tvn-tpsa-items').innerHTML = ih;
+
+  // checklist
+  $('tvn-check-list').innerHTML = checklist.map(function (t, i) {
+    return '<li><input type="checkbox" id="chk-' + (i + 1) + '" disabled><label for="chk-' + (i + 1) + '">' + esc(t) + '</label></li>';
+  }).join('');
 
   // ---------- Validation ----------
-  function validateNumeric(m, when) {
-    var fid = m.id + '-' + when;
-    var input = $(fid), wrap = $('wrap-' + fid), msg = $('msg-' + fid);
-    var raw = input.value.trim();
+  function setMsg(fid, ok, text) {
+    var wrap = $('wrap-' + fid), msg = $('msg-' + fid);
     wrap.classList.remove('is-valid', 'is-invalid');
-    if (raw === '') { valid[fid] = false; values[fid] = null; msg.textContent = ''; return; }
+    if (ok === true) wrap.classList.add('is-valid');
+    if (ok === false && text) wrap.classList.add('is-invalid');
+    msg.textContent = text || '';
+  }
+  function validateNum(fid, min, max) {
+    var raw = $(fid).value.trim();
+    if (raw === '') { valid[fid] = false; values[fid] = null; setMsg(fid, null, ''); return; }
     var n = Number(raw);
-    if (!isFinite(n)) { valid[fid] = false; values[fid] = null; wrap.classList.add('is-invalid'); msg.textContent = '✗ Enter a number.'; return; }
-    if (n < m.min || n > m.max) { valid[fid] = false; values[fid] = null; wrap.classList.add('is-invalid'); msg.textContent = '✗ Must be between ' + m.min + ' and ' + m.max + '.'; return; }
-    valid[fid] = true; values[fid] = n; wrap.classList.add('is-valid'); msg.textContent = '✓ Recorded';
+    if (!isFinite(n)) { valid[fid] = false; values[fid] = null; setMsg(fid, false, '✗ Enter a number.'); return; }
+    if (n < min || n > max) { valid[fid] = false; values[fid] = null; setMsg(fid, false, '✗ Must be between ' + min + ' and ' + max + '.'); return; }
+    valid[fid] = true; values[fid] = n; setMsg(fid, true, '✓ Recorded');
   }
-
-  function validateText(m, when) {
-    var fid = m.id + '-' + when;
-    var input = $(fid), wrap = $('wrap-' + fid), msg = $('msg-' + fid);
-    var raw = input.value.trim();
-    wrap.classList.remove('is-valid', 'is-invalid');
-    if (raw === '') { valid[fid] = false; values[fid] = ''; msg.textContent = ''; return; }
-    valid[fid] = true; values[fid] = raw; wrap.classList.add('is-valid'); msg.textContent = '✓ Recorded';
+  function validateSel(fid) {
+    var v = $(fid).value;
+    valid[fid] = !!v; values[fid] = v;
+    setMsg(fid, v ? true : null, v ? '✓ Recorded' : '');
   }
-
+  function validateStudent() {
+    var v = $('student').value.trim();
+    valid.student = !!v; values.student = v;
+    setMsg('student', v ? true : null, v ? '✓ Recorded' : '');
+  }
   function wordCount(s) { var t = s.trim(); return t ? t.split(/\s+/).length : 0; }
-
   function validatePrompt(pid) {
     var ta = $(pid), wrap = $('wrap-' + pid), cnt = $('count-' + pid);
     var n = wordCount(ta.value);
     wrap.classList.remove('is-valid', 'is-invalid');
     values[pid] = ta.value.trim();
     if (n === 0) { valid[pid] = false; cnt.textContent = '0 words (at least ' + MIN_WORDS + ' required)'; return; }
-    if (n < MIN_WORDS) { valid[pid] = false; wrap.classList.add('is-invalid'); cnt.textContent = '✗ ' + n + ' word' + (n === 1 ? '' : 's') + ' — need ' + (MIN_WORDS - n) + ' more'; return; }
+    if (n < MIN_WORDS) { valid[pid] = false; wrap.classList.add('is-invalid'); cnt.textContent = '✗ ' + n + ' word' + (n === 1 ? '' : 's') + ', need ' + (MIN_WORDS - n) + ' more'; return; }
     valid[pid] = true; wrap.classList.add('is-valid'); cnt.textContent = '✓ ' + n + ' words';
   }
+  function itemValue(n) {
+    var r = document.querySelector('input[name="q' + n + '"]:checked');
+    return r ? Number(r.value) : null;
+  }
+  function tpsaFinal() {
+    var res = {}, n = 0;
+    TPSA.forEach(function (d) {
+      var sum = 0, answered = 0;
+      d.items.forEach(function () { n++; var v = itemValue(n); if (v !== null) { sum += v; answered++; } });
+      res[d.id] = { sum: sum, answered: answered, done: answered === d.items.length };
+    });
+    return res;
+  }
+  function renderDomainScores(f) {
+    TPSA.forEach(function (d) {
+      var r = f[d.id];
+      $('score-' + d.id).textContent = r.done ? 'Final domain score: ' + r.sum + ' / 20 (' + band(r.sum) + ')' : 'Final domain score: — / 20 (' + r.answered + ' of 5 answered)';
+    });
+  }
 
-  // ---------- Deltas ----------
-  function fmt(n, unit) { return (Math.round(n * 10) / 10) + (unit || ''); }
-  function signed(n) { return (n > 0 ? '+' : '') + (Math.round(n * 10) / 10); }
+  // ---------- Change math ----------
+  function round1(n) { return Math.round(n * 10) / 10; }
+  function signed(n) { return (n > 0 ? '+' : '') + round1(n); }
+  function pctChange(b, f) { return b === 0 ? null : (f - b) / b * 100; }
+  function direction(dir, d) {
+    if (d === 0) return 'No change';
+    if (!dir) return d > 0 ? 'Increased' : 'Decreased';
+    var improved = dir === 'up' ? d > 0 : d < 0;
+    return improved ? 'Improved' : 'Declined';
+  }
 
-  function interpret(m, b, f) {
-    var d = f - b;
-    if (m.id === 'scaled') {
-      var mag = Math.abs(d);
-      if (d === 0) return f >= PASS ? 'No change — you sit ' + (f - PASS) + ' above the pass line.' : 'No change — still ' + (PASS - f) + ' below the pass line.';
-      var dir = d > 0 ? 'up' : 'down';
-      if (f >= PASS && b < PASS) return 'Scaled score ' + dir + ' ' + mag + ' — you crossed the pass line.';
-      if (f >= PASS && b >= PASS) return 'Scaled score ' + dir + ' ' + mag + ' — still ' + (f - PASS) + ' above the pass line.';
-      if (f < PASS && b >= PASS) return 'Scaled score ' + dir + ' ' + mag + ' — you dropped below the pass line by ' + (PASS - f) + '.';
-      return 'Scaled score ' + dir + ' ' + mag + ' — still ' + (PASS - f) + ' below the pass line.';
-    }
-    if (m.id === 'pct') return d === 0 ? 'No change in overall accuracy.' : 'Overall accuracy ' + (d > 0 ? 'up' : 'down') + ' ' + Math.abs(d) + ' points (' + b + '% → ' + f + '%).';
-    if (m.id === 'lowpct') return d === 0 ? 'Your weakest area held steady at ' + f + '%.' : 'Weakest area ' + (d > 0 ? 'up' : 'down') + ' ' + Math.abs(d) + ' points — ' + (f < 60 ? 'still under 60%, keep it scheduled.' : 'now at ' + f + '%.');
-    if (m.id === 'secs') return d === 0 ? 'Pacing unchanged at ' + f + ' s per question.' : (d < 0 ? 'Faster by ' + Math.abs(d) + ' s per question — check that accuracy held.' : 'Slower by ' + d + ' s per question — check whether the extra time bought accuracy.');
-    if (m.id === 'changed') return d === 0 ? 'Same number of right→wrong changes per block.' : (d < 0 ? Math.abs(d) + ' fewer right→wrong changes per block — your answer-change rule is working.' : d + ' more right→wrong changes per block — revisit your answer-change rule.');
-    if (m.id === 'domains') return d === 0 ? 'Same number of domains rated "needs work" (' + f + ' of 4).' : (d < 0 ? Math.abs(d) + ' fewer domain' + (Math.abs(d) === 1 ? '' : 's') + ' rated "needs work" (' + f + ' of 4 remain).' : d + ' more domain' + (d === 1 ? '' : 's') + ' rated "needs work" (' + f + ' of 4).');
-    return '';
+  // Rows used by the table, the CSV and the text copy. Each: {label, b, f, unit, dir, text}
+  function rows() {
+    var out = [];
+    ALL.forEach(function (m) {
+      var b = values[m.id + '-baseline'], f = values[m.id + '-final'];
+      var ok = valid[m.id + '-baseline'] && valid[m.id + '-final'];
+      out.push({ label: m.label, b: ok ? b : null, f: ok ? f : null, unit: m.unit || '', dir: m.dir, text: !!m.select, rawB: valid[m.id + '-baseline'] ? b : '', rawF: valid[m.id + '-final'] ? f : '' });
+    });
+    var fin = tpsaFinal();
+    TPSA.forEach(function (d, i) {
+      var bOk = valid[d.id + '-baseline'], fOk = fin[d.id].done;
+      out.push({ label: 'Test Performance Self-Assessment, Domain ' + (i + 1) + ': ' + d.name + ' (0–20)', b: bOk && fOk ? values[d.id + '-baseline'] : null, f: bOk && fOk ? fin[d.id].sum : null, unit: '', dir: 'down', text: false,
+        rawB: bOk ? values[d.id + '-baseline'] : '', rawF: fOk ? fin[d.id].sum : '', bandB: bOk ? band(values[d.id + '-baseline']) : '', bandF: fOk ? band(fin[d.id].sum) : '' });
+    });
+    return out;
   }
 
   function renderDeltas() {
-    var body = $('tvn-delta-body');
-    var rows = '';
-    metrics.forEach(function (m) {
-      var b = values[m.id + '-baseline'], f = values[m.id + '-final'];
-      var ok = valid[m.id + '-baseline'] && valid[m.id + '-final'];
-      var bCell = ok ? esc(m.text ? b : fmt(b, m.unit)) : '—';
-      var fCell = ok ? esc(m.text ? f : fmt(f, m.unit)) : '—';
-      var dCell = '<span class="tvn-delta flat">–</span>', note = 'Enter both numbers to compute.';
-      if (ok && m.text) {
-        if (b.toLowerCase() === f.toLowerCase()) { dCell = '<span class="tvn-delta flat">– same area</span>'; note = 'Your weakest area is still ' + esc(f) + '.'; }
-        else { dCell = '<span class="tvn-delta flat">changed</span>'; note = 'Weakest area moved from ' + esc(b) + ' to ' + esc(f) + '.'; }
-      } else if (ok) {
-        var d = f - b;
-        var improved = m.higherIsBetter ? d > 0 : d < 0;
-        if (d === 0) dCell = '<span class="tvn-delta flat">– no change (0)</span>';
-        else if (improved) dCell = '<span class="tvn-delta up">▲ improved (' + signed(d) + (m.unit || '') + ')</span>';
-        else dCell = '<span class="tvn-delta down">▼ declined (' + signed(d) + (m.unit || '') + ')</span>';
-        note = esc(interpret(m, b, f));
+    var html = '';
+    rows().forEach(function (r) {
+      var ready = r.b !== null && r.f !== null;
+      var bC = '—', fC = '—', dC = '–', pC = '–', dirC = 'Enter both values';
+      if (ready && r.text) {
+        bC = esc(r.b); fC = esc(r.f); dC = r.b === r.f ? 'Same' : 'Moved'; pC = 'n/a';
+        dirC = r.b === r.f ? 'Same domain' : 'Moved from ' + esc(r.b) + ' to ' + esc(r.f);
+      } else if (ready) {
+        var d = r.f - r.b, p = pctChange(r.b, r.f), lab = direction(r.dir, d);
+        var cls = lab === 'Improved' ? 'up' : lab === 'Declined' ? 'down' : 'flat';
+        bC = round1(r.b) + r.unit; fC = round1(r.f) + r.unit;
+        dC = '<span class="tvn-delta ' + cls + '">' + (d === 0 ? '0' : signed(d)) + r.unit + '</span>';
+        pC = p === null ? 'n/a (baseline 0)' : '<span class="tvn-delta ' + cls + '">' + signed(p) + '%</span>';
+        dirC = (cls === 'up' ? '▲ ' : cls === 'down' ? '▼ ' : '') + lab;
+        if (r.bandF) dirC += ' · ' + esc(r.bandB) + ' → ' + esc(r.bandF);
       }
-      rows += '<tr><th scope="row">' + esc(m.label) + '</th><td>' + bCell + '</td><td>' + fCell + '</td><td>' + dCell + '</td><td>' + note + '</td></tr>';
+      html += '<tr><th scope="row">' + esc(r.label) + '</th><td>' + bC + '</td><td>' + fC + '</td><td>' + dC + '</td><td>' + pC + '</td><td>' + dirC + '</td></tr>';
     });
-    body.innerHTML = rows;
+    $('tvn-delta-body').innerHTML = html;
   }
 
-  // ---------- Progress, checklist gate, readiness ----------
+  // ---------- Progress, checklist gate ----------
   function completedCount() {
-    var n = 0;
-    metrics.forEach(function (m) { if (valid[m.id + '-baseline']) n++; if (valid[m.id + '-final']) n++; });
+    var n = valid.student ? 1 : 0;
+    ALL.forEach(function (m) { if (valid[m.id + '-baseline']) n++; if (valid[m.id + '-final']) n++; });
+    TPSA.forEach(function (d) { if (valid[d.id + '-baseline']) n++; });
+    for (var i = 1; i <= 30; i++) if (itemValue(i) !== null) n++;
     prompts.forEach(function (p) { if (valid[p]) n++; });
     return n;
   }
-
-  function allChecked() {
-    for (var i = 1; i <= checklist.length; i++) { if (!$('chk-' + i).checked) return false; }
-    return true;
-  }
+  function allChecked() { for (var i = 1; i <= checklist.length; i++) if (!$('chk-' + i).checked) return false; return true; }
 
   function update() {
+    renderDomainScores(tpsaFinal());
+    renderDeltas();
     var done = completedCount();
     var pct = Math.round(done / REQUIRED * 100);
     $('tvn-progress-fill').style.width = pct + '%';
     $('tvn-progress-label').textContent = done + ' of ' + REQUIRED + ' required fields complete';
-    var track = document.querySelector('.tvn-progress .progress-track');
-    track.setAttribute('aria-valuenow', String(done));
-
+    document.querySelector('.tvn-progress .progress-track').setAttribute('aria-valuenow', String(pct));
     var fieldsDone = done === REQUIRED;
     var sec = $('tvn-checklist-section');
     var wasLocked = sec.classList.contains('tvn-locked');
     sec.classList.toggle('tvn-locked', !fieldsDone);
-    for (var i = 1; i <= checklist.length; i++) { $('chk-' + i).disabled = !fieldsDone; }
+    for (var i = 1; i <= checklist.length; i++) $('chk-' + i).disabled = !fieldsDone;
     $('tvn-check-hint').textContent = fieldsDone ? 'All fields complete. Tick all 8 items to finish.' : 'Locked until every field above is complete (' + (REQUIRED - done) + ' remaining). Tick all 8 to finish.';
     if (wasLocked && fieldsDone) Activity.announce('All fields complete. The readiness checklist is now unlocked.');
-
     var ticked = 0;
-    for (var j = 1; j <= checklist.length; j++) { if ($('chk-' + j).checked) ticked++; }
-
+    for (var j = 1; j <= checklist.length; j++) if ($('chk-' + j).checked) ticked++;
     var ready = fieldsDone && allChecked();
-    var status = $('tvn-status');
     if (ready) {
-      status.textContent = '✓ All sections complete and all 8 checklist items ticked. Copy your answers below, then select Finish.';
+      $('tvn-status').textContent = '✓ All sections complete and all 8 checklist items ticked. Save your results below, then select Finish.';
       if (!wasReady) {
         Activity.setReady(true, 'All sections complete and every readiness item ticked.');
         if (!summarized) {
           summarized = true;
-          Activity.summarize({
-            score: null,
-            right: ['Section 1 — Baseline vs final numbers', 'Section 2 — What changed + trusted-change reflection', 'Section 3 — Priorities and readiness', 'Readiness checklist — 8 of 8 ticked'],
-            missed: [],
-            note: 'Copy your answers into the Final NBCOT Readiness Reflection.'
-          });
+          Activity.summarize({ score: null,
+            right: ['TrueLearn and NBCOT Self-Assessment numbers, baseline and final', 'Test Performance Self-Assessment retaken (30 items)', 'What changed, with percent change', 'Priorities and readiness reflections', 'Readiness checklist, 8 of 8 ticked'],
+            missed: [], note: 'Download your results for Excel and paste your answers into the Final NBCOT Readiness Reflection.' });
         }
       }
       wasReady = true;
     } else {
-      status.textContent = fieldsDone ? (ticked + ' of 8 checklist items ticked.') : '';
+      $('tvn-status').textContent = fieldsDone ? (ticked + ' of 8 checklist items ticked.') : '';
       if (wasReady) { Activity.setReady(false); Activity.announce('Completion condition no longer met. Finish is disabled until all fields are valid and all 8 items are ticked.'); }
       wasReady = false;
     }
   }
 
-  // ---------- Copy my answers ----------
-  function assembleText() {
-    var lines = [];
-    lines.push('THEN VS. NOW — OTD 6185 Module 7');
-    lines.push('');
-    lines.push('SECTION 1 — Baseline (Module 1) vs Final (Module 7)');
-    metrics.forEach(function (m) {
-      var b = $(m.id + '-baseline').value.trim() || '(blank)';
-      var f = $(m.id + '-final').value.trim() || '(blank)';
-      lines.push(m.label + ': baseline ' + b + (m.text ? '' : m.unit) + ' | final ' + f + (m.text ? '' : m.unit));
+  // ---------- Export ----------
+  function today() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function table() {
+    var head = ['Student', 'Date'], row = [values.student || '', today()];
+    rows().forEach(function (r) {
+      head.push(r.label + ' - Baseline', r.label + ' - Final');
+      row.push(r.rawB === null ? '' : r.rawB, r.rawF === null ? '' : r.rawF);
+      if (!r.text) {
+        head.push(r.label + ' - Change', r.label + ' - % change');
+        var ok = r.b !== null && r.f !== null, p = ok ? pctChange(r.b, r.f) : null;
+        row.push(ok ? round1(r.f - r.b) : '', p === null ? '' : round1(p));
+      }
     });
-    lines.push('');
-    lines.push('SECTION 2 — What changed');
-    metrics.forEach(function (m) {
-      var ok = valid[m.id + '-baseline'] && valid[m.id + '-final'];
-      if (!ok) { lines.push(m.label + ': (incomplete)'); return; }
-      var b = values[m.id + '-baseline'], f = values[m.id + '-final'];
-      if (m.text) { lines.push(m.label + ': ' + (b.toLowerCase() === f.toLowerCase() ? 'same area (' + f + ')' : b + ' -> ' + f)); return; }
-      var d = f - b; var improved = m.higherIsBetter ? d > 0 : d < 0;
-      var tag = d === 0 ? 'no change' : (improved ? 'improved' : 'declined');
-      lines.push(m.label + ': ' + signed(d) + (m.unit || '') + ' (' + tag + ') — ' + interpret(m, b, f));
-    });
-    lines.push('');
-    prompts.forEach(function (p) {
-      lines.push(promptLabels[p]);
-      lines.push($(p).value.trim() || '(blank)');
-      lines.push('');
-    });
-    lines.push('READINESS CHECKLIST');
-    checklist.forEach(function (t, i) { lines.push(($('chk-' + (i + 1)).checked ? '[x] ' : '[ ] ') + t); });
-    return lines.join('\n');
+    var n = 0;
+    TPSA.forEach(function (d, di) { d.items.forEach(function () { n++; head.push('TPSA final item ' + n + ' (Domain ' + (di + 1) + ')'); var v = itemValue(n); row.push(v === null ? '' : v); }); });
+    prompts.forEach(function (p) { head.push(promptLabels[p]); row.push($(p).value.trim()); });
+    checklist.forEach(function (t, i) { head.push('Checklist ' + (i + 1) + ': ' + t); row.push($('chk-' + (i + 1)).checked ? 'Yes' : 'No'); });
+    return [head, row];
+  }
+  function csvCell(v) { v = String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function tsvCell(v) { return String(v).replace(/[\t\r\n]+/g, ' '); }
+  function say(t) { $('tvn-copy-msg').textContent = t; Activity.announce(t); }
+  function copyText(text, okMsg, failMsg) {
+    var out = $('tvn-copy-out'); out.value = text;
+    var copied = false;
+    try { out.focus(); out.select(); if (document.execCommand) copied = document.execCommand('copy'); } catch (e) { copied = false; }
+    say(copied ? okMsg : failMsg);
   }
 
-  $('tvn-copy-btn').addEventListener('click', function () {
-    var out = $('tvn-copy-out'), msg = $('tvn-copy-msg');
-    out.value = assembleText();
-    var copied = false;
+  $('tvn-csv-btn').addEventListener('click', function () {
+    var t = table();
+    var csv = '﻿' + t.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n') + '\r\n';
+    var name = 'OTD6185-then-vs-now-' + ((values.student || 'student').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'student') + '-' + today() + '.csv';
     try {
-      out.focus(); out.select();
-      if (document.execCommand) copied = document.execCommand('copy');
-    } catch (e) { copied = false; }
-    msg.textContent = copied ? '✓ Copied to your clipboard. Paste it into the Final NBCOT Readiness Reflection.' : 'Your answers are assembled below. Select all the text in the box and copy it (Ctrl+C or Cmd+C).';
-    Activity.announce(msg.textContent);
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+      say('✓ Downloaded ' + name + '. Open it in Excel. If nothing downloaded, use Copy row for Excel instead.');
+    } catch (e) {
+      copyText(t.map(function (r) { return r.map(tsvCell).join('\t'); }).join('\n'),
+        'Your browser blocked the download, so the data was copied instead. Paste it into Excel (cell A1).',
+        'Your browser blocked the download. Select all the text in the box below, copy it, and paste it into Excel.');
+    }
+  });
+  $('tvn-tsv-btn').addEventListener('click', function () {
+    var t = table();
+    copyText(t.map(function (r) { return r.map(tsvCell).join('\t'); }).join('\n'),
+      '✓ Copied a header row and your data row. Paste into Excel (cell A1); each value lands in its own column.',
+      'Your data is in the box below. Select all of it, copy (Ctrl+C or Cmd+C), and paste into Excel.');
+  });
+  $('tvn-copy-btn').addEventListener('click', function () {
+    var L = ['THEN VS. NOW: OTD 6185', 'Student: ' + (values.student || '(blank)') + '   Date: ' + today(), '', 'WHAT CHANGED (baseline -> final)'];
+    rows().forEach(function (r) {
+      if (r.b === null || r.f === null) { L.push(r.label + ': (incomplete)'); return; }
+      if (r.text) { L.push(r.label + ': ' + r.b + ' -> ' + r.f); return; }
+      var p = pctChange(r.b, r.f);
+      L.push(r.label + ': ' + round1(r.b) + r.unit + ' -> ' + round1(r.f) + r.unit + ' (' + signed(r.f - r.b) + r.unit + (p === null ? '' : ', ' + signed(p) + '%') + '; ' + direction(r.dir, r.f - r.b).toLowerCase() + ')' + (r.bandF ? ' [' + r.bandB + ' -> ' + r.bandF + ']' : ''));
+    });
+    L.push('');
+    prompts.forEach(function (p) { L.push(promptLabels[p]); L.push($(p).value.trim() || '(blank)'); L.push(''); });
+    L.push('READINESS CHECKLIST');
+    checklist.forEach(function (t, i) { L.push(($('chk-' + (i + 1)).checked ? '[x] ' : '[ ] ') + t); });
+    copyText(L.join('\n'), '✓ Copied to your clipboard. Paste it into the Final NBCOT Readiness Reflection.', 'Your answers are assembled below. Select all the text in the box and copy it (Ctrl+C or Cmd+C).');
   });
 
   // ---------- Wire events ----------
-  metrics.forEach(function (m) {
+  $('student').addEventListener('input', function () { validateStudent(); update(); });
+  ALL.forEach(function (m) {
     ['baseline', 'final'].forEach(function (when) {
       var fid = m.id + '-' + when;
-      var fn = m.text ? function () { validateText(m, when); renderDeltas(); update(); } : function () { validateNumeric(m, when); renderDeltas(); update(); };
-      $(fid).addEventListener('input', fn);
-      $(fid).addEventListener('change', fn);
+      var fn = m.select ? function () { validateSel(fid); update(); } : function () { validateNum(fid, m.min, m.max); update(); };
+      $(fid).addEventListener('input', fn); $(fid).addEventListener('change', fn);
     });
   });
-  prompts.forEach(function (p) {
-    $(p).addEventListener('input', function () { validatePrompt(p); update(); });
+  TPSA.forEach(function (d) {
+    var fid = d.id + '-baseline';
+    var fn = function () { validateNum(fid, 0, 20); update(); };
+    $(fid).addEventListener('input', fn); $(fid).addEventListener('change', fn);
   });
-  for (var k = 1; k <= checklist.length; k++) { $('chk-' + k).addEventListener('change', update); }
+  $('tvn-tpsa-items').addEventListener('change', update);
+  prompts.forEach(function (p) { $(p).addEventListener('input', function () { validatePrompt(p); update(); }); });
+  for (var k = 1; k <= checklist.length; k++) $('chk-' + k).addEventListener('change', update);
 
-  // Initial state
-  metrics.forEach(function (m) { if (m.text) { validateText(m, 'baseline'); validateText(m, 'final'); } else { validateNumeric(m, 'baseline'); validateNumeric(m, 'final'); } });
+  validateStudent();
+  ALL.forEach(function (m) { ['baseline', 'final'].forEach(function (w) { var fid = m.id + '-' + w; if (m.select) validateSel(fid); else validateNum(fid, m.min, m.max); }); });
+  TPSA.forEach(function (d) { validateNum(d.id + '-baseline', 0, 20); });
   prompts.forEach(validatePrompt);
-  renderDeltas();
   update();
 })();
 </script>

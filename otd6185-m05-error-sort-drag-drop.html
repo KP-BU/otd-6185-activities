@@ -418,7 +418,7 @@ var C={"instructions": "Select a note, then select the category that best explai
 document.getElementById("sInstr").textContent=C.instructions;
 var pool=document.getElementById("pool"),bins=document.getElementById("bins"),checkBtn=document.getElementById("checkBtn"),statusEl=document.getElementById("sStatus");
 var sel=null,placed={},first=null,locked={},firstRes={};
-var order=C.items.map(function(_,i){return i}).sort(function(){return Math.random()-.5});
+var order=(function(){var n=C.items.length,best=null,bestRuns=1e9;for(var t=0;t<300;t++){var a=C.items.map(function(_,i){return i});for(var i=n-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}var runs=0;for(var k=1;k<n;k++){if(C.items[a[k]].bin===C.items[a[k-1]].bin)runs++;}if(runs<bestRuns){best=a;bestRuns=runs;}if(runs===0)break;}return best;})();
 var binEls={};
 C.bins.forEach(function(b,bi){
   var d=document.createElement("div");d.className="bin";d.dataset.bin=bi;

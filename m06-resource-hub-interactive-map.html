@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Outside Prep Resource Hub — OTD 6185 Module 6</title>
+<title>NBCOT Preparation Resource Hub — OTD 6185 Module 6</title>
 <style>
   :root {
     --green: #154734; --gold: #FFB81C;
@@ -242,97 +242,89 @@
 @media (min-width: 1100px) {
   .tiles.fit-4 { grid-template-columns: repeat(4, 1fr); }
 }
+.step-n { display:inline-grid; place-items:center; width:1.6rem; height:1.6rem; border-radius:50%; background: var(--green); color:#fff; font-size:.85rem; margin-right:.35rem; }
+.prio-grid { display:grid; grid-template-columns: 1fr; gap:.55rem; }
+.prio { text-align:left; font:inherit; color:inherit; background:#fff; border:2px solid var(--line); border-radius:8px; padding:.6rem .75rem; cursor:pointer; display:flex; flex-direction:column; gap:.15rem; }
+.prio .prio-name { font-weight:700; }
+.prio .prio-hint { font-size:.83rem; color: var(--muted); }
+.prio[aria-pressed="true"] { border-color: var(--green); background: var(--soft-green); }
+.prio[aria-pressed="true"] .prio-name::before { content: "✓ "; color: var(--green); }
+.prio:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+.lane h3 { font-size:1rem; margin: 0 0 .5rem; color: var(--green); }
+.badges { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.25rem; }
+.badge { font-size:.75rem; font-weight:700; border-radius:999px; padding:.1rem .5rem; }
+.badge[hidden] { display:none; }
+.badge.match { background: var(--soft-gold); color:#6b4a00; }
+.badge.seen { background:#e7f0ea; color: var(--green); }
+.badge.inplan { background: var(--green); color:#fff; }
+.tile.is-match { border-color: #e9b04a; }
+.tile.is-visited.is-match { border-color: var(--green); }
+.detail-panel { border:2px solid var(--line); border-radius:8px; padding: .9rem 1rem; background:#fff; }
+.detail-panel h3 { margin-top:0; font-size:1.05rem; }
+.sup { display:inline-block; font-size:.82rem; border:1px solid var(--line); border-radius:999px; padding:.1rem .55rem; margin:0 .2rem .25rem 0; }
+.sup.on { border-color:#e9b04a; background: var(--soft-gold); font-weight:700; }
+.plan-row { border:1px solid rgba(0,0,0,.12); border-radius:8px; padding:.6rem .75rem; margin-bottom:.6rem; }
+.plan-name { font-weight:700; margin:0 0 .4rem; }
+.plan-fields { display:grid; grid-template-columns:1fr; gap:.5rem; }
+.tvn-field label { display:block; font-size:.88rem; margin-bottom:3px; }
+.tvn-field select { width:100%; }
+.tvn-status { font-size:.95rem; margin:.4rem 0 0; }
+.copy-out { width:100%; box-sizing:border-box; min-height:140px; margin-top:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.85rem; }
+@media (min-width: 700px) { .prio-grid { grid-template-columns: repeat(2, 1fr); } .plan-fields { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .tiles.fit-4 { grid-template-columns: repeat(3, 1fr); } .prio-grid { grid-template-columns: repeat(3, 1fr); } }
 </style>
 </head>
 <body>
 <main>
   
   <header class="card">
-    <span class="eyebrow">Module 6 · NBCOT Intensive & Final Preparation</span>
-    <h1>Outside prep resource hub</h1>
-    <p class="lede">Open every resource to see what it's for, what it costs you in time, and when in your plan it fits. All eight opened unlocks the planner prompt.</p>
+    <span class="eyebrow">Module 6 · From Preparation to Practice</span>
+    <h1>NBCOT preparation resource hub</h1>
+    <p class="lede">Choose the priorities your final results point to, explore each resource to see how it can help, then pick the ones that belong in your NBCOT Preparation Plan.</p>
   </header>
 
-<div class="hub-progress" role="status">
-  <span id="hubProgressText">0 of 8 resources opened</span>
-  <div class="progress-track"><div class="progress-fill" id="hubProgressFill" style="width:0%"></div></div>
-</div>
+<section class="card" aria-labelledby="h-step1">
+  <h2 id="h-step1"><span class="step-n">1</span> What are my priorities?</h2>
+  <p class="hint">Use your Then vs. Now results. Choose every priority that still needs attention (at least one). Resources that match will be flagged below.</p>
+  <div class="prio-grid" id="prioGrid" role="group" aria-label="My preparation priorities"></div>
+</section>
 
-<div class="lane" data-lane="Practice questions">
-  <h2>Practice questions</h2>
-  <div class="tiles fit-4">
-    <button type="button" class="tile" data-id="truelearn">
-      <span class="tile-name">TrueLearn question bank</span>
-      <span class="tile-hint">Mixed practice, rationales, your Module 1 metrics</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
-    <button type="button" class="tile" data-id="nbcot-official">
-      <span class="tile-name">NBCOT official practice tools</span>
-      <span class="tile-hint">Self-Assessment &amp; StudyPack sample items</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
-    <button type="button" class="tile" data-id="therapyed-exams">
-      <span class="tile-name">TherapyEd practice exams</span>
-      <span class="tile-hint">Full-length timed blocks, in the review book</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
+<section class="card" aria-labelledby="h-step2">
+  <h2 id="h-step2"><span class="step-n">2</span> What resources are available?</h2>
+  <div class="hub-progress" role="status">
+    <span id="hubProgressText">0 of 11 resources opened</span>
+    <div class="progress-track"><div class="progress-fill" id="hubProgressFill" style="width:0%"></div></div>
   </div>
-</div>
-
-<div class="lane" data-lane="Content review">
-  <h2>Content review</h2>
-  <div class="tiles fit-4">
-    <button type="button" class="tile" data-id="therapyed-guide">
-      <span class="tile-name">TherapyEd National OT Certification Exam Review &amp; Study Guide</span>
-      <span class="tile-hint">Organized content review by domain</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
-    <button type="button" class="tile" data-id="course-materials">
-      <span class="tile-name">Your own course materials &amp; OTPF-4</span>
-      <span class="tile-hint">Definitions, process order, terminology</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
-    <button type="button" class="tile" data-id="peer-group">
-      <span class="tile-name">Peer study group / question-writing swap</span>
-      <span class="tile-hint">Explain rationales out loud, write NBCOT-style items</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
+  <p class="hint">Open each resource. If it fits your priorities and your schedule, select <strong>Add to my plan</strong>.</p>
+  <div id="lanes"></div>
+  <div class="detail-panel" id="detailPanel" role="region" aria-label="Resource details" tabindex="-1">
+    <h3 id="detailTitle">Resource details</h3>
+    <p class="detail-empty" id="detailEmpty">Select a resource above to see what it's for, which priorities it supports, how to fit it into a plan, and what to watch out for.</p>
+    <div id="detailBody" hidden>
+      <div class="lane-tag" id="detailLane"></div>
+      <dl class="detail-grid">
+        <div><dt>Best for</dt><dd id="detailBest"></dd></div>
+        <div><dt>Supports</dt><dd id="detailSupports"></dd></div>
+        <div><dt>How to fit it into your plan</dt><dd id="detailFit"></dd></div>
+        <div><dt>Watch out for</dt><dd id="detailWatch"></dd></div>
+      </dl>
+      <div class="controls"><button type="button" class="btn primary" id="addBtn" aria-pressed="false">Add to my plan</button></div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="lane" data-lane="Readiness &amp; logistics">
-  <h2>Readiness &amp; logistics</h2>
-  <div class="tiles fit-4">
-    <button type="button" class="tile" data-id="candidate-handbook">
-      <span class="tile-name">NBCOT Candidate Handbook &amp; exam-day rules</span>
-      <span class="tile-hint">Registration, scheduling, ID, testing-center rules</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
-    <button type="button" class="tile" data-id="error-log">
-      <span class="tile-name">Error log &amp; pathway tracker</span>
-      <span class="tile-hint">From Modules 4–5, turns practice into next steps</span>
-      <span class="visited-badge"><span class="glyph" aria-hidden="true">✓</span> Viewed</span>
-    </button>
+<section class="card" aria-labelledby="h-step3">
+  <h2 id="h-step3"><span class="step-n">3</span> How will I use them?</h2>
+  <p class="hint" id="planHint">Add at least two resources to your plan. For each one, choose how often you'll use it and name the priority it supports.</p>
+  <div id="planList"></div>
+  <p class="tvn-status" id="planStatus" role="status"></p>
+  <div class="controls">
+    <button type="button" class="btn" id="copyBtn">Copy for my NBCOT Preparation Plan</button>
   </div>
-</div>
-
-<div class="card detail-panel" id="detailPanel" role="region" aria-label="Resource details" tabindex="0">
-  <h2 id="detailTitle">Resource details</h2>
-  <p class="detail-empty" id="detailEmpty">Select a resource above to see what it's for, its time cost, when to use it, and what to watch out for.</p>
-  <div class="lane-tag" id="detailLane" hidden></div>
-  <dl class="detail-grid" id="detailGrid" hidden>
-    <div><dt>Best for</dt><dd id="detailBest"></dd></div>
-    <div><dt>Time cost</dt><dd id="detailTime"></dd></div>
-    <div><dt>When to use it</dt><dd id="detailWhen"></dd></div>
-    <div><dt>Watch out for</dt><dd id="detailWatch"></dd></div>
-  </dl>
-</div>
-
-<div class="card planner-card" id="plannerCard" hidden>
-  <h2>Planner prompt</h2>
-  <p>Pick two resources for the next 14 days and one for exam week. Write them into your Personal Focus Sheet before the TherapyEd intensive.</p>
-</div>
-
+  <label for="copyOut" class="visually-hidden">Assembled resource plan</label>
+  <textarea class="copy-out" id="copyOut" readonly></textarea>
+  <p class="hint" id="copyMsg" role="status"></p>
+</section>
   <section id="summary" class="card" hidden aria-labelledby="summary-heading">
     <h2 id="summary-heading">How you did</h2>
     <p class="summary-score" id="summary-score"></p>
@@ -525,151 +517,209 @@ const Parts = (() => {
 })();
 
 (function () {
-  var RESOURCES = {
-    "truelearn": {
-      lane: "Practice questions",
-      name: "TrueLearn question bank",
-      best: "Mixed practice with rationales and the performance metrics you used in Module 1.",
-      time: "40–60 questions per session, 60–75 min with rationale review.",
-      when: "Throughout; the data drives your pathway.",
-      watch: "Reading rationales only for missed items — read them for guessed-right items too."
-    },
-    "nbcot-official": {
-      lane: "Practice questions",
-      name: "NBCOT official practice tools (Self-Assessment, StudyPack sample items)",
-      best: "The closest match to real item style and the scaled score.",
-      time: "Self-assessment ~1 hr; sample sets ~30 min.",
-      when: "Baseline and again in Module 7.",
-      watch: "Limited item pool — don't over-repeat and memorize."
-    },
-    "therapyed-exams": {
-      lane: "Practice questions",
-      name: "TherapyEd practice exams (in the review book)",
-      best: "Full-length timed blocks that build endurance.",
-      time: "3–4 hrs per exam plus review.",
-      when: "After the intensive, one per week.",
-      watch: "Item difficulty is deliberately high; treat the score as a stress test, not a predictor."
-    },
-    "therapyed-guide": {
-      lane: "Content review",
-      name: "TherapyEd National OT Certification Exam Review & Study Guide",
-      best: "Organized content review by domain with the intensive's structure.",
-      time: "2–3 hrs per chapter.",
-      when: "Weakest content areas first, from your Module 1 data.",
-      watch: "Reading cover to cover — it's a reference, not a novel."
-    },
-    "course-materials": {
-      lane: "Content review",
-      name: "Your own course materials & OTPF-4",
-      best: "Definitions, process order and terminology the exam uses.",
-      time: "20-min lookups.",
-      when: "Whenever an error lands in the Knowledge or Terminology bins.",
-      watch: "Notes from first year may be outdated on frameworks."
-    },
-    "peer-group": {
-      lane: "Content review",
-      name: "Peer study group / question-writing swap",
-      best: "Explaining rationales out loud and writing items in NBCOT style.",
-      time: "60–90 min weekly.",
-      when: "From the intensive onward.",
-      watch: "Groups that drift to reassurance instead of practice."
-    },
-    "candidate-handbook": {
-      lane: "Readiness & logistics",
-      name: "NBCOT Candidate Handbook & exam-day rules",
-      best: "Registration, scheduling, ID and testing-center rules, what you may bring.",
-      time: "30 min once, then a re-check the week before.",
-      when: "As soon as eligibility is confirmed.",
-      watch: "Scheduling windows fill; book early."
-    },
-    "error-log": {
-      lane: "Readiness & logistics",
-      name: "Error log & pathway tracker (from Modules 4–5)",
-      best: "Turning every practice cycle into a targeted next step.",
-      time: "10 min after each session.",
-      when: "Every session until exam day.",
-      watch: "Logging without acting — each entry should end with what you'll practice next."
-    }
-  };
+  var PRIORITIES = [
+    { id: 'content', name: 'Content knowledge', hint: 'A lower-performing domain or task area' },
+    { id: 'reasoning', name: 'Question interpretation & clinical reasoning', hint: 'Reading the directive, two good answers' },
+    { id: 'pA', name: 'Pathway A: Pacing, attention & exam endurance', hint: 'Timing, focus late in the exam' },
+    { id: 'pB', name: 'Pathway B: Answer changing & second-guessing', hint: 'Correct → incorrect changes' },
+    { id: 'pC', name: 'Pathway C: Test anxiety & performance under pressure', hint: 'Anxiety, recovering after hard items' },
+    { id: 'pD', name: 'Pathway D: Study efficiency & preparation strategy', hint: 'What to study, using your data' }
+  ];
+  var PNAME = {}; PRIORITIES.forEach(function (p) { PNAME[p.id] = p.name; });
 
-  var TOTAL = Object.keys(RESOURCES).length;
-  var visited = new Set();
-  var completed = false;
+  var LANES = ['Practice questions & mock exams', 'Content review', 'Test-performance strategies from this course', 'Planning & exam readiness'];
+  var RESOURCES = [
+    { id: 'truelearn', lane: 0, name: 'TrueLearn question bank & mock exams', hint: 'Practice blocks, rationales, performance data',
+      best: 'Timed and untimed practice with rationales, plus the performance data you used in this course.',
+      supports: ['content', 'reasoning', 'pA', 'pB', 'pD'],
+      fit: 'Several short practice blocks each week, built from your lowest areas; schedule another full-length mock to check progress.',
+      watch: 'Chasing a percentage. Review every rationale, including the ones you got right.' },
+    { id: 'nbcot', lane: 0, name: "NBCOT's own study tools", hint: 'Self-Assessment, official practice items',
+      best: 'Practice that reflects how the certification exam itself is written, and a fresh look at your self-perceived readiness.',
+      supports: ['content', 'reasoning', 'pD'],
+      fit: 'Use as a checkpoint: once partway through your plan and again close to your exam date.',
+      watch: 'Using official items up early, before you have practiced enough to learn from them.' },
+    { id: 'therapyed-exams', lane: 0, name: 'TherapyEd practice exams', hint: 'Full-length practice in the review book',
+      best: 'Building stamina and testing your pacing plan over a full exam.',
+      supports: ['pA', 'pC', 'reasoning'],
+      fit: 'One full-length exam under exam-like conditions every one to two weeks, followed by an error review.',
+      watch: 'Taking full exams back to back without reviewing what went wrong.' },
+    { id: 'therapyed-guide', lane: 1, name: 'TherapyEd review & study guide', hint: 'Content review organized by domain',
+      best: 'Structured review of content areas where your results are still lower.',
+      supports: ['content'],
+      fit: 'Short review sessions on one content area, followed right away by practice questions on that area.',
+      watch: 'Rereading for hours. Test yourself on what you just reviewed.' },
+    { id: 'course-materials', lane: 1, name: 'Your OT program materials & OTPF-4', hint: 'Definitions, process order, terminology',
+      best: 'Quick lookups for terminology, frameworks and the order of the OT process.',
+      supports: ['content', 'reasoning'],
+      fit: 'Short lookups whenever a missed question traces back to a definition or a step in the process.',
+      watch: 'Older notes that may not match current frameworks or terminology.' },
+    { id: 'peer-group', lane: 1, name: 'Peer study group', hint: 'Explain rationales, write NBCOT-style items',
+      best: 'Explaining your reasoning out loud and hearing how others eliminate options.',
+      supports: ['content', 'reasoning', 'pB'],
+      fit: 'A set weekly session with a plan: a question set, then rationales explained in turn.',
+      watch: 'Sessions that drift into reassurance instead of practice.' },
+    { id: 'pathways', lane: 2, name: 'Your pathway strategies (Module 4)', hint: 'Pacing, answer changing, anxiety, study efficiency',
+      best: 'The specific strategy you chose for your test-performance pathway.',
+      supports: ['pA', 'pB', 'pC', 'pD'],
+      fit: 'Name the one strategy you will practice in every session, such as a time check, an answer-change rule or a reset routine.',
+      watch: 'Knowing the strategy but not practicing it under timed conditions.' },
+    { id: 'question-approach', lane: 2, name: 'Question approach: identify and filter, two good answers (Modules 2–3)', hint: 'Directive, key details, eliminate, choose, explain',
+      best: 'Slowing down to find what the question is really asking and what separates two plausible answers.',
+      supports: ['reasoning', 'pB'],
+      fit: 'Use it on every missed or guessed question when you review a practice set.',
+      watch: 'Using it only on the hard questions; it builds the habit when used on all of them.' },
+    { id: 'error-log', lane: 2, name: 'Your error log (Module 5)', hint: 'Turns every practice session into a next step',
+      best: 'Seeing whether your misses are knowledge, interpretation, reasoning or test-taking errors.',
+      supports: ['content', 'reasoning', 'pB', 'pD'],
+      fit: 'About ten minutes after each practice session; end every entry with what you will do next.',
+      watch: 'Logging errors without acting on them.' },
+    { id: 'then-vs-now', lane: 3, name: 'Your Then vs. Now results', hint: 'Baseline vs final readiness and performance',
+      best: 'Choosing priorities from evidence rather than from how you feel about testing.',
+      supports: ['content', 'pD'],
+      fit: 'Use it to set your two or three priorities now, and revisit it whenever you check your progress.',
+      watch: 'Treating one score change as definitive; mock exams differ in content and difficulty.' },
+    { id: 'handbook', lane: 3, name: 'NBCOT candidate information & exam-day rules', hint: 'Scheduling, ID, testing-center rules',
+      best: 'Knowing the logistics so exam week holds no surprises.',
+      supports: ['pC'],
+      fit: 'Read once when you schedule, then check again the week before your exam.',
+      watch: 'Waiting to schedule; plan your study timeline around a real date.' }
+  ];
+  var BYID = {}; RESOURCES.forEach(function (r) { BYID[r.id] = r; });
+  var TOTAL = RESOURCES.length;
+  var FREQ = ['Daily', 'A few times a week', 'Weekly', 'Every 1–2 weeks', 'Final two weeks', 'Exam week'];
 
-  var tiles = Array.prototype.slice.call(document.querySelectorAll(".tile"));
-  var progressText = document.getElementById("hubProgressText");
-  var progressFill = document.getElementById("hubProgressFill");
-  var detailEmpty = document.getElementById("detailEmpty");
-  var detailLane = document.getElementById("detailLane");
-  var detailGrid = document.getElementById("detailGrid");
-  var detailTitle = document.getElementById("detailTitle");
-  var detailBest = document.getElementById("detailBest");
-  var detailTime = document.getElementById("detailTime");
-  var detailWhen = document.getElementById("detailWhen");
-  var detailWatch = document.getElementById("detailWatch");
-  var plannerCard = document.getElementById("plannerCard");
+  var chosenPrio = new Set(), visited = new Set(), plan = [], planInfo = {};
+  var current = null, wasReady = false;
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
-  function updateProgress() {
-    var n = visited.size;
-    progressText.textContent = n + " of " + TOTAL + " resources opened";
-    progressFill.style.width = Math.round((n / TOTAL) * 100) + "%";
-  }
-
-  function openDetail(id) {
-    var r = RESOURCES[id];
-    if (!r) { return; }
-
-    detailEmpty.hidden = true;
-    detailLane.hidden = false;
-    detailGrid.hidden = false;
-    detailLane.textContent = r.lane;
-    detailTitle.textContent = r.name;
-    detailBest.textContent = r.best;
-    detailTime.textContent = r.time;
-    detailWhen.textContent = r.when;
-    detailWatch.textContent = r.watch;
-
-    if (!visited.has(id)) {
-      visited.add(id);
-      var tile = document.querySelector('.tile[data-id="' + id + '"]');
-      if (tile) { tile.classList.add("is-visited"); }
-      updateProgress();
-      Activity.announce(r.name + " opened. " + visited.size + " of " + TOTAL + " resources viewed.");
-      checkCompletion();
-    }
-  }
-
-  function checkCompletion() {
-    if (visited.size >= TOTAL) {
-      if (!completed) {
-        completed = true;
-        Activity.setReady(true, "All eight resources opened — ready to finish.");
-        var names = [];
-        Object.keys(RESOURCES).forEach(function (id) {
-          if (visited.has(id)) { names.push(RESOURCES[id].name); }
-        });
-        Activity.summarize({
-          score: null,
-          right: names,
-          missed: [],
-          note: "Resource exploration complete."
-        });
-        plannerCard.hidden = false;
-        Activity.announce("All resources explored. Planner prompt unlocked.");
-      }
-    } else {
-      Activity.setReady(false);
-    }
-  }
-
-  tiles.forEach(function (tile) {
-    tile.addEventListener("click", function () {
-      openDetail(tile.getAttribute("data-id"));
-    });
+  // Step 1
+  $('prioGrid').innerHTML = PRIORITIES.map(function (p) {
+    return '<button type="button" class="prio" data-p="' + p.id + '" aria-pressed="false"><span class="prio-name">' + esc(p.name) + '</span><span class="prio-hint">' + esc(p.hint) + '</span></button>';
+  }).join('');
+  $('prioGrid').addEventListener('click', function (e) {
+    var b = e.target.closest('.prio'); if (!b) return;
+    var id = b.getAttribute('data-p');
+    if (chosenPrio.has(id)) chosenPrio.delete(id); else chosenPrio.add(id);
+    b.setAttribute('aria-pressed', chosenPrio.has(id) ? 'true' : 'false');
+    renderMatches(); renderPlan(); if (current) openDetail(current, true); update();
   });
 
-  updateProgress();
-  Activity.setReady(false);
+  // Step 2
+  var lh = '';
+  LANES.forEach(function (lane, li) {
+    lh += '<div class="lane"><h3>' + esc(lane) + '</h3><div class="tiles fit-4">';
+    RESOURCES.filter(function (r) { return r.lane === li; }).forEach(function (r) {
+      lh += '<button type="button" class="tile" data-id="' + r.id + '"><span class="tile-name">' + esc(r.name) + '</span><span class="tile-hint">' + esc(r.hint) + '</span>' +
+        '<span class="badges"><span class="badge match" hidden>★ Matches your priorities</span><span class="badge seen" hidden>✓ Viewed</span><span class="badge inplan" hidden>＋ In my plan</span></span></button>';
+    });
+    lh += '</div></div>';
+  });
+  $('lanes').innerHTML = lh;
+  $('lanes').addEventListener('click', function (e) { var t = e.target.closest('.tile'); if (t) openDetail(t.getAttribute('data-id')); });
+
+  function matches(r) { return r.supports.some(function (s) { return chosenPrio.has(s); }); }
+  function renderMatches() {
+    RESOURCES.forEach(function (r) {
+      var t = document.querySelector('.tile[data-id="' + r.id + '"]');
+      t.querySelector('.match').hidden = !matches(r);
+      t.querySelector('.seen').hidden = !visited.has(r.id);
+      t.querySelector('.inplan').hidden = plan.indexOf(r.id) < 0;
+      t.classList.toggle('is-visited', visited.has(r.id));
+      t.classList.toggle('is-match', matches(r));
+    });
+    var n = visited.size;
+    $('hubProgressText').textContent = n + ' of ' + TOTAL + ' resources opened';
+    $('hubProgressFill').style.width = Math.round(n / TOTAL * 100) + '%';
+  }
+
+  function openDetail(id, quiet) {
+    var r = BYID[id]; if (!r) return;
+    current = id;
+    $('detailEmpty').hidden = true; $('detailBody').hidden = false;
+    $('detailTitle').textContent = r.name;
+    $('detailLane').textContent = LANES[r.lane];
+    $('detailBest').textContent = r.best;
+    $('detailSupports').innerHTML = r.supports.map(function (s) { return '<span class="sup' + (chosenPrio.has(s) ? ' on' : '') + '">' + (chosenPrio.has(s) ? '★ ' : '') + esc(PNAME[s]) + '</span>'; }).join(' ');
+    $('detailFit').textContent = r.fit;
+    $('detailWatch').textContent = r.watch;
+    var inPlan = plan.indexOf(id) >= 0;
+    $('addBtn').textContent = inPlan ? '✓ In my plan (select to remove)' : 'Add to my plan';
+    $('addBtn').setAttribute('aria-pressed', inPlan ? 'true' : 'false');
+    if (!quiet) {
+      if (!visited.has(id)) { visited.add(id); Activity.announce(r.name + ' opened. ' + visited.size + ' of ' + TOTAL + ' resources viewed.'); }
+      renderMatches(); update();
+      if (window.matchMedia('(max-width: 1099px)').matches) $('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+  $('addBtn').addEventListener('click', function () {
+    if (!current) return;
+    var i = plan.indexOf(current);
+    if (i >= 0) { plan.splice(i, 1); Activity.announce(BYID[current].name + ' removed from your plan.'); }
+    else { plan.push(current); if (!planInfo[current]) planInfo[current] = { freq: '', prio: '' }; Activity.announce(BYID[current].name + ' added to your plan.'); }
+    openDetail(current, true); renderMatches(); renderPlan(); update();
+  });
+
+  // Step 3
+  function renderPlan() {
+    if (!plan.length) { $('planList').innerHTML = '<p class="detail-empty">No resources in your plan yet.</p>'; return; }
+    var prioOpts = PRIORITIES.filter(function (p) { return chosenPrio.has(p.id); });
+    $('planList').innerHTML = plan.map(function (id) {
+      var r = BYID[id], info = planInfo[id];
+      var supported = prioOpts.filter(function (p) { return r.supports.indexOf(p.id) >= 0; });
+      var opts = (supported.length ? supported : prioOpts);
+      if (info.prio && !opts.some(function (p) { return p.id === info.prio; })) info.prio = '';
+      return '<div class="plan-row" data-id="' + id + '"><p class="plan-name">' + esc(r.name) + '</p><div class="plan-fields">' +
+        '<div class="tvn-field"><label for="f-' + id + '">How often</label><select id="f-' + id + '" data-k="freq"><option value="">Choose…</option>' +
+        FREQ.map(function (f) { return '<option' + (info.freq === f ? ' selected' : '') + '>' + esc(f) + '</option>'; }).join('') + '</select></div>' +
+        '<div class="tvn-field"><label for="p-' + id + '">Supports my priority</label><select id="p-' + id + '" data-k="prio"' + (opts.length ? '' : ' disabled') + '><option value="">' + (opts.length ? 'Choose…' : 'Choose a priority in Step 1') + '</option>' +
+        opts.map(function (p) { return '<option value="' + p.id + '"' + (info.prio === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>'; }).join('') + '</select></div>' +
+        '</div></div>';
+    }).join('');
+  }
+  $('planList').addEventListener('change', function (e) {
+    var s = e.target.closest('select'); if (!s) return;
+    var id = s.closest('.plan-row').getAttribute('data-id');
+    planInfo[id][s.getAttribute('data-k')] = s.value; update();
+  });
+
+  function planComplete() { return plan.length >= 2 && plan.every(function (id) { return planInfo[id].freq && planInfo[id].prio; }); }
+  function update() {
+    var needs = [];
+    if (!chosenPrio.size) needs.push('choose at least one priority');
+    if (visited.size < TOTAL) needs.push('open ' + (TOTAL - visited.size) + ' more resource' + (TOTAL - visited.size === 1 ? '' : 's'));
+    if (plan.length < 2) needs.push('add ' + (2 - plan.length) + ' more resource' + (2 - plan.length === 1 ? '' : 's') + ' to your plan');
+    else if (!planComplete()) needs.push('choose how often and which priority for each plan resource');
+    var ready = !needs.length;
+    $('planStatus').textContent = ready ? '✓ Your resource plan is complete. Copy it into Section 4 (My Preparation Resources) of your NBCOT Preparation Plan, then select Finish.' : 'To finish: ' + needs.join('; ') + '.';
+    if (ready && !wasReady) {
+      Activity.setReady(true, 'Resource plan complete. You can finish the activity.');
+      Activity.summarize({ score: null,
+        right: ['Priorities chosen: ' + PRIORITIES.filter(function (p) { return chosenPrio.has(p.id); }).map(function (p) { return p.name; }).join('; '),
+          'All ' + TOTAL + ' resources explored'].concat(plan.map(function (id) { return 'In my plan: ' + BYID[id].name + ' (' + planInfo[id].freq + ')'; })),
+        missed: [], note: 'Use your resource plan in Section 4 of the NBCOT Preparation Plan assignment.' });
+    }
+    if (!ready && wasReady) { Activity.setReady(false); Activity.announce('Completion condition no longer met.'); }
+    wasReady = ready;
+  }
+
+  $('copyBtn').addEventListener('click', function () {
+    var L = ['MY PREPARATION RESOURCES (OTD 6185 Module 6)', '', 'My priorities:'];
+    PRIORITIES.forEach(function (p) { if (chosenPrio.has(p.id)) L.push('- ' + p.name); });
+    L.push('', 'Resources I will use:');
+    plan.forEach(function (id) {
+      var r = BYID[id], i = planInfo[id];
+      L.push('- ' + r.name + ': ' + (i.freq || '(how often?)') + '; supports ' + (i.prio ? PNAME[i.prio] : '(priority?)') + '. ' + r.fit);
+    });
+    if (!plan.length) L.push('- (none added yet)');
+    var out = $('copyOut'); out.value = L.join('\n');
+    var ok = false; try { out.focus(); out.select(); ok = document.execCommand && document.execCommand('copy'); } catch (e) { ok = false; }
+    $('copyMsg').textContent = ok ? '✓ Copied. Paste it into your NBCOT Preparation Plan.' : 'Your plan is in the box above. Select all of it and copy (Ctrl+C or Cmd+C).';
+    Activity.announce($('copyMsg').textContent);
+  });
+
+  renderMatches(); renderPlan(); update(); Activity.setReady(false);
 })();
 </script>
 <div id="frv-activity" data-id="m06"></div>

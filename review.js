@@ -1,9 +1,9 @@
 /* Faculty review block: "Would you like to use this activity?" + Copy my choices + how-to-send steps.
    Choices are saved in this browser (shared by the list page and every activity page). */
 (function () {
-  var CFG = {"code": "OTD 6185", "title": "OTD 6185 Scholarly Practice III", "emailTo": "keith_pace@baylor.edu", "activities": [{"id": "m01", "module": "Module 1", "title": "What pattern is emerging?", "type": "Drag and Drop"}, {"id": "m02", "module": "Module 2", "title": "Identify and filter: what matters for this decision?", "type": "Mark the Words"}, {"id": "m03", "module": "Module 3", "title": "Two good answers: eliminate, choose, explain", "type": "Branching Scenario"}, {"id": "m04", "module": "Module 4", "title": "Which pathway, and which strategy first?", "type": "Dropdown"}, {"id": "m05", "module": "Module 5", "title": "What type of error was it?", "type": "Drag and Drop"}, {"id": "m06", "module": "Module 6", "title": "Outside prep resource hub", "type": "Interactive Map"}, {"id": "m07", "module": "Module 7", "title": "Then vs. now: what has changed?", "type": "Guided Documentation"}]};
+  var CFG = {"code": "OTD 6185", "title": "OTD 6185 Scholarly Practice III", "emailTo": "keith_pace@baylor.edu", "activities": [{"id": "m01", "module": "Module 1", "title": "What pattern is emerging?", "type": "Drag and Drop"}, {"id": "m02", "module": "Module 2", "title": "Identify and filter: what matters for this decision?", "type": "Mark the Words"}, {"id": "m03", "module": "Module 3", "title": "Two good answers: eliminate, choose, explain", "type": "Branching Scenario"}, {"id": "m04", "module": "Module 4", "title": "Which pathway, and which strategy first?", "type": "Dropdown"}, {"id": "m05", "module": "Module 5", "title": "What type of error was it?", "type": "Drag and Drop"}, {"id": "m06", "module": "Module 6", "title": "NBCOT preparation resource hub", "type": "Interactive Map"}, {"id": "m07", "module": "Module 6", "title": "Then vs. now: what has changed?", "type": "Guided Documentation"}]};
   var COURSE = CFG, A = CFG.activities;
-  var KEY = "review:" + COURSE.code;
+  var KEY = "review:" + COURSE.code + ":round2";
   var LABEL = { use: "Use it", no: "Don't use it", change: "Request a change" };
 
   var css =
